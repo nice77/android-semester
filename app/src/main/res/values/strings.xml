@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Task</string>
+    <string name="enjoy_events_around_you">Enjoy events around you</string>
+    <string name="register">Register</string>
+    <string name="sign_in">Sign in</string>
+    <string name="subtitle">IFinder is your way into meeting new people and having great time!</string>
+    <string name="if_you_need_any_support">If You Need Any Support</string>
+    <string name="click_here">Click Here</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="not_a_member">Not A Member?</string>
+    <string name="have_an_account">Have An Account?</string>
+    <string name="name">Name</string>
+    <string name="register_success">You\'ve successfully registered!</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
+    <string name="join_event">Join event!</string>
+</resources>
