@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkManager {
 
-    private val BASE_URL = "https://7850-94-180-239-195.ngrok-free.app/api/"
+    private val BASE_URL = "https://97fc-94-180-239-195.ngrok-free.app/api/"
 
     private val okHttpClient : OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -25,7 +25,10 @@ object NetworkManager {
         mRetrofit.create(AuthApi::class.java)
     }
 
-    fun getAuthApi() : AuthApi {
-        return _authApi
+    private val _userApi : UserApi by lazy {
+        mRetrofit.create(UserApi::class.java)
     }
+
+    fun getAuthApi() : AuthApi = _authApi
+    fun getUserApi() : UserApi = _userApi
 }
