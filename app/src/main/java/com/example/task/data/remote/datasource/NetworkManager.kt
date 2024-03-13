@@ -1,5 +1,6 @@
 package com.example.task.data.remote.datasource
 
+import com.example.task.data.remote.interceptors.RefreshTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,10 +11,11 @@ object NetworkManager {
 
     private val okHttpClient : OkHttpClient by lazy {
         OkHttpClient.Builder()
+            .addInterceptor(RefreshTokenInterceptor())
             .build()
     }
 
-    private val mRetrofit : Retrofit by lazy {
+    private val retrofit : Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
@@ -22,13 +24,15 @@ object NetworkManager {
     }
 
     private val _authApi : AuthApi by lazy {
-        mRetrofit.create(AuthApi::class.java)
+        retrofit.create(AuthApi::class.java)
     }
+    val authApi : AuthApi
+        get() = _authApi
 
     private val _userApi : UserApi by lazy {
-        mRetrofit.create(UserApi::class.java)
+        retrofit.create(UserApi::class.java)
     }
 
-    fun getAuthApi() : AuthApi = _authApi
-    fun getUserApi() : UserApi = _userApi
+    val userApi : UserApi
+        get() = _userApi
 }
