@@ -7,6 +7,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
@@ -42,7 +44,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
             submitBtn.setOnClickListener {
                 viewModel.authenticateUser(
                     email = binding.emailEt.text.toString(),
-                    password = binding.emailEt.text.toString()
+                    password = binding.passwordEt.text.toString()
                 )
             }
         }
