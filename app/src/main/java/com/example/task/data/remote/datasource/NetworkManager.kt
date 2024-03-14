@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkManager {
 
-    private val BASE_URL = "https://97fc-94-180-239-195.ngrok-free.app/api/"
+    private val BASE_URL = "https://d4f6-94-180-239-195.ngrok-free.app/api/"
 
     private val okHttpClient : OkHttpClient by lazy {
         OkHttpClient.Builder()

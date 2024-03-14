@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ServiceLocator.setContext(baseContext)
+        ServiceLocator.setContext(applicationContext)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
                 as NavHostFragment
