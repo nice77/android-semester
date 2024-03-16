@@ -5,10 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.task.data.local.sharedpreferences.Preferences
-import com.example.task.data.remote.datasource.requests.AuthenticationRequest
-import com.example.task.data.remote.mappers.ToSharedPreferencesMapper
 import com.example.task.di.ServiceLocator
+import com.example.task.domain.models.ErrorEnum
+import com.example.task.domain.models.request.AuthenticationRequestDomainModel
 import com.example.task.domain.usecases.AuthenticateUserUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,17 +17,20 @@ class AuthViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase
 ) : ViewModel() {
 
-    private val _errorFlow = MutableSharedFlow<Throwable>()
-    val errorFlow : SharedFlow<Throwable>
+    private val _errorFlow = MutableSharedFlow<ErrorEnum>()
+    val errorFlow : SharedFlow<ErrorEnum>
         get() = _errorFlow
 
     fun authenticateUser(email : String, password: String) {
-        val request = AuthenticationRequest(
+        val request = AuthenticationRequestDomainModel (
             email = email,
             password = password
         )
         viewModelScope.launch {
-            authenticateUserUseCase.authenticate(request, _errorFlow)
+            val result = authenticateUserUseCase(request)
+            if (result.isFailure) {
+                _errorFlow.emit(ErrorEnum.UNKNOWN_HOST)
+            }
         }
     }
 
@@ -37,8 +39,8 @@ class AuthViewModel(
             initializer {
                 val authenticateUserUseCase =
                     AuthenticateUserUseCase(
-                        preferences = ServiceLocator.providePreferences(),
-                        toSharedPreferencesMapper = ServiceLocator.provideToSharedPreferencesMapper()
+                        tokensRepository = ServiceLocator.provideTokensRepository(),
+                        authRepository = ServiceLocator.provideAuthRepository()
                     )
                 AuthViewModel(authenticateUserUseCase)
             }

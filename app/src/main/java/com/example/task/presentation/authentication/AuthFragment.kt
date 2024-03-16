@@ -15,6 +15,7 @@ import com.example.task.R
 import com.example.task.data.remote.datasource.NetworkManager
 import com.example.task.data.remote.datasource.requests.AuthenticationRequest
 import com.example.task.databinding.FragmentAuthBinding
+import com.example.task.domain.models.ErrorEnum
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -31,11 +32,6 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
-        arguments?.let {
-            if (it.getBoolean(REGISTERED_KEY)) {
-                Snackbar.make(view, getString(R.string.register_success), Snackbar.LENGTH_SHORT).show()
-            }
-        }
 
         binding.run {
             registerTv.setOnClickListener {
@@ -55,16 +51,10 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
             with (viewModel) {
 
                 launch {
-                    errorFlow.collect { exception ->
-                        when (exception) {
-                            is HttpException -> {
-                                val code = exception.response()!!.code()
-                                val msg = exception.response()!!.message()
-                                Snackbar.make(requireView(), "$code: $msg", Snackbar.LENGTH_LONG).show()
-                            }
-                            is UnknownHostException -> {
-                                Snackbar.make(requireView(), getString(R.string.unknown_host), Snackbar.LENGTH_LONG).show()
-                            }
+                    errorFlow.collect { error ->
+                        when (error) {
+                            ErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
+                            ErrorEnum.EMAIL_IN_USE -> {}
                         }
                     }
                 }
@@ -73,7 +63,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         }
     }
 
-    companion object {
-        private const val REGISTERED_KEY = "registered"
+    private fun showSnackbar(message : String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 }

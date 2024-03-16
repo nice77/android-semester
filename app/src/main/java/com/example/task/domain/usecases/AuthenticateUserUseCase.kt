@@ -1,29 +1,21 @@
 package com.example.task.domain.usecases
 
-import com.example.task.data.local.sharedpreferences.Preferences
-import com.example.task.data.remote.datasource.NetworkManager
-import com.example.task.data.remote.datasource.requests.AuthenticationRequest
-import com.example.task.data.remote.datasource.responses.AuthenticationResponse
-import com.example.task.data.remote.mappers.ToSharedPreferencesMapper
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.example.task.data.repositories.AuthRepository
+import com.example.task.data.repositories.TokensRepository
+import com.example.task.domain.models.request.AuthenticationRequestDomainModel
+import com.example.task.utils.runSuspendCatching
 
 class AuthenticateUserUseCase (
-    private val preferences: Preferences,
-    private val toSharedPreferencesMapper: ToSharedPreferencesMapper
+    private val tokensRepository: TokensRepository,
+    private val authRepository: AuthRepository
 ) {
 
-    suspend fun authenticate(
-        request: AuthenticationRequest,
-        _errorFlow : MutableSharedFlow<Throwable>
-    ) {
-        runCatching {
-            NetworkManager.authApi.authenticate(request)
-        }.onSuccess {  response ->
-            val tokensEntity = toSharedPreferencesMapper.mapToTokensEntity(response)
-            preferences.addTokens(tokensEntity)
-        }.onFailure { exception ->
-            _errorFlow.emit(exception)
+    suspend operator fun invoke(
+        request: AuthenticationRequestDomainModel,
+    ) : Result<*> {
+        return runSuspendCatching {
+            val tokens = authRepository.authenticate(request)
+            tokensRepository.addTokens(tokens)
         }
     }
-
 }
