@@ -1,10 +1,8 @@
 package com.example.task.data.local.sharedpreferences
 
-import android.content.Context
 import android.content.SharedPreferences
-import com.example.task.utils.Keys
 
-class Preferences (
+class TokensPreferences (
     private val preferences : SharedPreferences
 ) {
     fun addTokens(entity: TokensEntity) {
@@ -33,5 +31,10 @@ class Preferences (
             access = access,
             refresh = refresh
         )
+    }
+
+    fun updateTokens(entity: TokensEntity) {
+        removeTokens()
+        addTokens(entity)
     }
 }
