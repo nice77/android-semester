@@ -1,4 +1,4 @@
-package com.example.task.utils
+package com.example.task.data.local.sharedpreferences
 
 object Keys {
     const val PREFS_NAME = "prefs"
