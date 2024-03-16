@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -54,8 +55,11 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    def gsonVersion = "2.10.1"
-    implementation "com.google.code.gson:gson:$gsonVersion"
+    def serializationVersion = "1.6.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
+
+    def serializationFactoryVersion = "1.0.0"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$serializationFactoryVersion"
 
     def okHttpVersion = "4.10.0"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
