@@ -14,13 +14,13 @@ class AuthRepository(
 ) {
 
     suspend fun authenticate(request: AuthenticationRequestDomainModel) : TokensDomainModel {
-        return toDomainModelMapper.mapToDomainModel(
+        return toDomainModelMapper.mapAuthResponseToTokensDomainModel(
             authApi.authenticate(AuthenticationRequest(email = request.email, password = request.password))
         )
     }
 
     suspend fun refreshToken(request: RefreshRequestDomainModel) : TokensDomainModel {
-        return toDomainModelMapper.mapToDomainModel(
+        return toDomainModelMapper.mapAuthResponseToTokensDomainModel(
             authApi.refreshToken(RefreshRequest(refresh = request.refresh))
         )
     }
