@@ -16,9 +16,12 @@ class TokensRepository (
         preferences.removeTokens()
     }
 
-    fun getTokens() : TokensDomainModel {
-        val tokens = preferences.getTokens()!!
-        return TokensDomainModel(access = tokens.access, refresh = tokens.refresh)
+    fun getTokens() : TokensDomainModel? {
+        val tokens = preferences.getTokens()
+        tokens?.let {
+            return TokensDomainModel(access = it.access, refresh = it.refresh)
+        }
+        return null
     }
 
     fun updateTokens(tokens : TokensDomainModel) {

@@ -12,7 +12,7 @@ class AuthenticateUserUseCase (
 
     suspend operator fun invoke(
         request: AuthenticationRequestDomainModel,
-    ) : Result<*> {
+    ) : Result<Unit> {
         return runSuspendCatching {
             val tokens = authRepository.authenticate(request)
             tokensRepository.addTokens(tokens)
