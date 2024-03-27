@@ -37,7 +37,7 @@ object ServiceLocator {
     }
 
     fun provideUserRepository() : UserRepository {
-        return UserRepository(NetworkManager.userApi)
+        return UserRepository(NetworkManager.userApi, provideToDomainModelMapper())
     }
 
     fun provideTokensRepository() : TokensRepository {
