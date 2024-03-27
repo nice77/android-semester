@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.task.data.remote.datasource.NetworkManager
+import com.example.task.data.repositories.UserRepository
 import com.example.task.di.ServiceLocator
-import com.example.task.domain.models.ErrorEnum
+import com.example.task.domain.models.RegisterErrorEnum
 import com.example.task.domain.models.request.RegisterRequestDomainModel
+import com.example.task.domain.usecases.GetUsersUseCase
 import com.example.task.domain.usecases.RegisterUserUseCase
 import com.example.task.domain.validators.ValidateEmailUseCase
 import com.example.task.domain.validators.ValidatePasswordUseCase
@@ -22,8 +25,8 @@ class RegisterViewModel(
     private val validatePasswordUseCase: ValidatePasswordUseCase
 ) : ViewModel() {
 
-    private val _errorFlow = MutableSharedFlow<ErrorEnum>()
-    val errorFlow : SharedFlow<ErrorEnum>
+    private val _errorFlow = MutableSharedFlow<RegisterErrorEnum>()
+    val errorFlow : SharedFlow<RegisterErrorEnum>
         get() = _errorFlow
 
     fun registerUser(name : String, email : String, password : String) {
@@ -34,12 +37,10 @@ class RegisterViewModel(
                 password = password
             )
             val result = registerUserUseCase(request)
-            if (result.isFailure) {
-                result.onFailure { error ->
-                    when (error) {
-                        is HttpException -> _errorFlow.emit(ErrorEnum.EMAIL_IN_USE)
-                        is UnknownHostException -> _errorFlow.emit(ErrorEnum.UNKNOWN_HOST)
-                    }
+            result.onFailure { error ->
+                when (error) {
+                    is HttpException -> _errorFlow.emit(RegisterErrorEnum.EMAIL_IN_USE)
+                    is UnknownHostException -> _errorFlow.emit(RegisterErrorEnum.UNKNOWN_HOST)
                 }
             }
         }
@@ -51,6 +52,22 @@ class RegisterViewModel(
 
     fun validatePassword(text : String) : Boolean {
         return validatePasswordUseCase(text)
+    }
+
+    fun testMethodToGetUsers() {
+        viewModelScope.launch {
+            val resp = ServiceLocator.provideTokensRepository().getTokens()
+            resp?.let {
+                println(
+                    GetUsersUseCase(
+                        ServiceLocator.provideUserRepository()
+                    )(
+                        accessToken = it.access,
+                        0
+                    )
+                )
+            }
+        }
     }
 
     companion object {

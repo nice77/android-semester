@@ -5,22 +5,20 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentRegisterBinding
-import com.example.task.domain.models.ErrorEnum
+import com.example.task.domain.models.RegisterErrorEnum
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.UnknownHostException
 import kotlin.math.roundToInt
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -58,14 +56,18 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             signInTv.setOnClickListener {
                 findNavController().navigate(R.id.action_registerFragment_to_authFragment)
             }
+
+            clickHereTv.setOnClickListener {
+                viewModel.testMethodToGetUsers()
+            }
         }
     }
 
-    private fun changeOutline(editText : EditText, state : Boolean) {
+    private fun changeOutline(editText : EditText, isValid : Boolean) {
         val pixels = (requireContext().resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT).roundToInt()
         val background = editText.background as GradientDrawable
 
-        if (!state) {
+        if (!isValid) {
             background.setStroke(pixels, requireContext().getColor(R.color.red))
             return
         }
@@ -75,13 +77,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     }
 
     private fun observeData() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            with (viewModel) {
-                launch {
-                    errorFlow.collect { error ->
-                        when (error) {
-                            ErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
-                            ErrorEnum.EMAIL_IN_USE -> showSnackbar(getString(R.string.email_in_use))
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                with (viewModel) {
+                    launch {
+                        errorFlow.collect { error ->
+                            when (error) {
+                                RegisterErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
+                                RegisterErrorEnum.EMAIL_IN_USE -> showSnackbar(getString(R.string.email_in_use))
+                            }
                         }
                     }
                 }
