@@ -19,26 +19,21 @@ class RefreshTokenInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         if (response.code == 403) {
-            println("TEST TAG - token expired")
             val tokens = tokensPreferences.getTokens()
-            println("TEST TAG - got tokens: $tokens")
             tokens?.let {
                 val refreshRequest = RefreshRequest(tokens.refresh)
-                val authenticationResponseResult = runBlocking(Dispatchers.IO) {
+                val authenticationResponseResult = runBlocking {
                     runCatching {
                         authApi.refreshToken(refreshRequest)
                     }.getOrNull()
                 }
-                println("TEST TAG - auth Response: $authenticationResponseResult")
                 authenticationResponseResult?.let {
                     val tokensEntity = TokensEntity(
                         access = it.access,
                         refresh = it.refresh
                     )
-                    println("TEST TAG - Updating tokens")
                     tokensPreferences.updateTokens(tokensEntity)
                     response.close()
-                    println("TEST TAG - first response closed")
                     return chain.proceed(
                         Request.Builder()
                             .url(chain.request().url)
@@ -52,7 +47,6 @@ class RefreshTokenInterceptor(
                  */
             }
         }
-        println("TEST TAG - returning main response")
         return response
     }
 }

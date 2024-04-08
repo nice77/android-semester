@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.task.data.remote.datasource.NetworkManager
-import com.example.task.data.repositories.UserRepository
 import com.example.task.di.ServiceLocator
 import com.example.task.domain.models.RegisterErrorEnum
 import com.example.task.domain.models.request.RegisterRequestDomainModel
