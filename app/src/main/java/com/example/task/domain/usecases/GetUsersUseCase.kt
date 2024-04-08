@@ -9,11 +9,10 @@ class GetUsersUseCase(
 ) {
 
     suspend operator fun invoke(
-        accessToken : String,
         page : Int
     ) : Result<List<UserDomainModel>> {
         return runSuspendCatching {
-            userRepository.getUsers(accessToken, page)
+            userRepository.getUsers(page)
         }
     }
 

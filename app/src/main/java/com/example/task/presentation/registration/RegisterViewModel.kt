@@ -60,7 +60,6 @@ class RegisterViewModel(
                     GetUsersUseCase(
                         ServiceLocator.provideUserRepository()
                     )(
-                        accessToken = it.access,
                         0
                     )
                 )

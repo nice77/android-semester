@@ -1,5 +1,6 @@
 package com.example.task.data.remote.datasource
 
+import com.example.task.data.remote.interceptors.AccessTokenInterceptor
 import com.example.task.data.remote.interceptors.RefreshTokenInterceptor
 import com.example.task.di.ServiceLocator
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -10,7 +11,7 @@ import retrofit2.Retrofit
 
 object NetworkManager {
 
-    private const val _BASE_URL = "https://66ff-94-180-239-195.ngrok-free.app/api/"
+    private const val _BASE_URL = "https://3f81-94-180-239-195.ngrok-free.app/api/"
     val BASE_URL : String
         get() = _BASE_URL
 
@@ -18,6 +19,9 @@ object NetworkManager {
 
     private val okHttpClient : OkHttpClient by lazy {
         OkHttpClient.Builder()
+            .addInterceptor(AccessTokenInterceptor(
+                ServiceLocator.providePreferences()
+            ))
             .addInterceptor(RefreshTokenInterceptor(
                 ServiceLocator.providePreferences(),
                 authApi

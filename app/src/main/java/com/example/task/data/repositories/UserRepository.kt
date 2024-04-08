@@ -20,10 +20,9 @@ class UserRepository (
         )
     }
 
-    suspend fun getUsers(accessToken : String, page : Int = 0) : List<UserDomainModel> {
+    suspend fun getUsers(page : Int = 0) : List<UserDomainModel> {
         return userApi.getUsers(
-            "Bearer $accessToken",
-            page
+            page = page
         ).map { userResponse ->
             toDomainModelMapper.mapUserResponseToUserDomainModel(userResponse)
         }

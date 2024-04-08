@@ -14,5 +14,8 @@ interface UserApi {
     suspend fun register(@Body request : RegisterRequest)
 
     @GET("users")
-    suspend fun getUsers(@Header("Authorization") accessToken : String, @Query("page") page : Int) : List<UserResponse>
+    suspend fun getUsers(
+        @Header("Authorization") accessToken : String = "",
+        @Query("page") page : Int
+    ) : List<UserResponse>
 }

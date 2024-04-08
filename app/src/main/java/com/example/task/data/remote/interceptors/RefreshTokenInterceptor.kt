@@ -41,10 +41,6 @@ class RefreshTokenInterceptor(
                             .build()
                     )
                 }
-                /* response == null ->
-                we've got a handled error on server side: UsedTokenException | ExpiredJwtException | SignatureException | MalformedJwtException
-                have to send user to auth page from current fragment
-                 */
             }
         }
         return response
