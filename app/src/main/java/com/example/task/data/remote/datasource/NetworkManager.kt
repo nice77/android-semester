@@ -15,6 +15,8 @@ object NetworkManager {
     val BASE_URL : String
         get() = _BASE_URL
 
+    const val authStringResource = "Authorization: true"
+
     private val contentType = "application/json".toMediaType()
 
     private val okHttpClient : OkHttpClient by lazy {
