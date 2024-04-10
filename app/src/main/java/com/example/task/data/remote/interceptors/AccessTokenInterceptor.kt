@@ -9,7 +9,7 @@ class AccessTokenInterceptor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        if (request.headers.contains(Pair("Authorization", ""))) {
+        if (request.headers.contains(Pair("Authorization", "true"))) {
             val tokens = tokensPreferences.getTokens()
             tokens?.let {
                 val newRequest = request.newBuilder()
