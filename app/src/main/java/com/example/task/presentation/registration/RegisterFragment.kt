@@ -17,6 +17,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentRegisterBinding
 import com.example.task.domain.models.RegisterErrorEnum
+import com.example.task.utils.component
+import com.example.task.utils.lazyViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -24,7 +26,9 @@ import kotlin.math.roundToInt
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private val binding : FragmentRegisterBinding by viewBinding(FragmentRegisterBinding::bind)
-    private val viewModel : RegisterViewModel by viewModels { RegisterViewModel.factory }
+    private val viewModel : RegisterViewModel by lazyViewModel {
+        requireContext().component.registerViewModel().create()
+    }
 
     private var emailCorrect = false
     private var passwordCorrect = false
@@ -55,10 +59,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
             signInTv.setOnClickListener {
                 findNavController().navigate(R.id.action_registerFragment_to_authFragment)
-            }
-
-            clickHereTv.setOnClickListener {
-                viewModel.testMethodToGetUsers()
             }
         }
     }

@@ -3,8 +3,9 @@ package com.example.task.data.remote.interceptors
 import com.example.task.data.local.sharedpreferences.TokensPreferences
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
-class AccessTokenInterceptor(
+class AccessTokenInterceptor @Inject constructor(
     private val tokensPreferences: TokensPreferences
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {

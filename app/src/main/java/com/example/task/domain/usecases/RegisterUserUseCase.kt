@@ -1,11 +1,12 @@
 package com.example.task.domain.usecases
 
-import com.example.task.data.repositories.UserRepository
+import com.example.task.data.repositories.UserRepositoryImpl
 import com.example.task.domain.models.request.RegisterRequestDomainModel
 import com.example.task.utils.runSuspendCatching
+import javax.inject.Inject
 
-class RegisterUserUseCase (
-    private val repository: UserRepository
+class RegisterUserUseCase @Inject constructor (
+    private val repository: UserRepositoryImpl
 ) {
 
     suspend operator fun invoke (

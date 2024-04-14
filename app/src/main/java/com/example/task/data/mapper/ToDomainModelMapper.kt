@@ -1,11 +1,13 @@
-package com.example.task.data.remote.mappers
+package com.example.task.data.mapper
 
 import com.example.task.data.remote.datasource.responses.AuthenticationResponse
 import com.example.task.data.remote.datasource.responses.UserResponse
 import com.example.task.domain.models.TokensDomainModel
 import com.example.task.domain.models.UserDomainModel
+import javax.inject.Inject
 
-class ToDomainModelMapper {
+class ToDomainModelMapper @Inject constructor(
+){
 
     fun mapAuthResponseToTokensDomainModel(response : AuthenticationResponse) : TokensDomainModel {
         return TokensDomainModel(

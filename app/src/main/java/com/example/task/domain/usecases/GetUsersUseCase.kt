@@ -1,18 +1,19 @@
 package com.example.task.domain.usecases
 
-import com.example.task.data.repositories.UserRepository
+import com.example.task.data.repositories.UserRepositoryImpl
 import com.example.task.domain.models.UserDomainModel
 import com.example.task.utils.runSuspendCatching
+import javax.inject.Inject
 
-class GetUsersUseCase(
-    private val userRepository: UserRepository
+class GetUsersUseCase @Inject constructor(
+    private val userRepositoryImpl: UserRepositoryImpl
 ) {
 
     suspend operator fun invoke(
         page : Int
     ) : Result<List<UserDomainModel>> {
         return runSuspendCatching {
-            userRepository.getUsers(page)
+            userRepositoryImpl.getUsers(page)
         }
     }
 
