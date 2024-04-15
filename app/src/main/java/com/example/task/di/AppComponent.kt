@@ -1,7 +1,6 @@
 package com.example.task.di
 
 import android.content.Context
-import com.example.task.MainActivity
 import com.example.task.data.di.DataModule
 import com.example.task.data.di.DataModuleBinder
 import com.example.task.presentation.authentication.AuthViewModel
@@ -25,8 +24,6 @@ interface AppComponent {
 
         fun build() : AppComponent
     }
-
-    fun inject(mainActivity : MainActivity)
 
     fun registerViewModel() : RegisterViewModel.Factory
 
