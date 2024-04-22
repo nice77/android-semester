@@ -1,8 +1,9 @@
 package com.example.task.data.local.sharedpreferences
 
 import android.content.SharedPreferences
+import javax.inject.Inject
 
-class TokensPreferences (
+class TokensPreferences @Inject constructor(
     private val preferences : SharedPreferences
 ) {
     fun addTokens(entity: TokensEntity) {

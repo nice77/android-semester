@@ -13,6 +13,8 @@ import com.example.task.R
 import com.example.task.databinding.FragmentAuthBinding
 import com.example.task.domain.models.AuthErrorEnum
 import com.example.task.domain.models.RegisterErrorEnum
+import com.example.task.utils.component
+import com.example.task.utils.lazyViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -20,7 +22,9 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     private val binding : FragmentAuthBinding by viewBinding(FragmentAuthBinding::bind)
 
-    private val viewModel : AuthViewModel by viewModels { AuthViewModel.factory }
+    private val viewModel : AuthViewModel by lazyViewModel {
+        requireContext().component.authViewModel().create()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

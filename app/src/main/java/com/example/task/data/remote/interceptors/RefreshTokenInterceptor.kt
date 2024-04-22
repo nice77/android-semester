@@ -3,15 +3,15 @@ package com.example.task.data.remote.interceptors
 import com.example.task.data.local.sharedpreferences.TokensEntity
 import com.example.task.data.local.sharedpreferences.TokensPreferences
 import com.example.task.data.remote.datasource.AuthApi
-import com.example.task.data.remote.datasource.NetworkManager
 import com.example.task.data.remote.datasource.requests.RefreshRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import javax.inject.Inject
 
-class RefreshTokenInterceptor(
+class RefreshTokenInterceptor @Inject constructor(
     private val tokensPreferences: TokensPreferences,
     private val authApi: AuthApi
 ) : Interceptor {

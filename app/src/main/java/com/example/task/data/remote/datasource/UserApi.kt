@@ -15,7 +15,7 @@ interface UserApi {
     suspend fun register(@Body request : RegisterRequest)
 
     @GET("users")
-    @Headers(NetworkManager.authStringResource)
+    @Headers(StaticStrings.AUTH_HEADER)
     suspend fun getUsers(
         @Query("page") page : Int
     ) : List<UserResponse>

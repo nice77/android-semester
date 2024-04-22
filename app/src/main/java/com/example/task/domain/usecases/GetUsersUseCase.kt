@@ -1,10 +1,11 @@
 package com.example.task.domain.usecases
 
-import com.example.task.data.repositories.UserRepository
 import com.example.task.domain.models.UserDomainModel
+import com.example.task.domain.repository.UserRepository
 import com.example.task.utils.runSuspendCatching
+import javax.inject.Inject
 
-class GetUsersUseCase(
+class GetUsersUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
