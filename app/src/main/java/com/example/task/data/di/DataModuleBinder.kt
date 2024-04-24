@@ -5,9 +5,11 @@ import com.example.task.data.di.qualifiers.RefreshTokenInterceptorQualifier
 import com.example.task.data.remote.interceptors.AccessTokenInterceptor
 import com.example.task.data.remote.interceptors.RefreshTokenInterceptor
 import com.example.task.data.repositories.AuthRepositoryImpl
+import com.example.task.data.repositories.EventRepositoryImpl
 import com.example.task.data.repositories.TokensRepositoryImpl
 import com.example.task.data.repositories.UserRepositoryImpl
 import com.example.task.domain.repository.AuthRepository
+import com.example.task.domain.repository.EventRepository
 import com.example.task.domain.repository.TokensRepository
 import com.example.task.domain.repository.UserRepository
 import dagger.Binds
@@ -33,4 +35,7 @@ interface DataModuleBinder {
 
     @Binds
     fun bindUserRepositoryImplToInterface(userRepositoryImpl: UserRepositoryImpl) : UserRepository
+
+    @Binds
+    fun bindEventRepositoryImplToInterface(eventRepositoryImpl: EventRepositoryImpl) : EventRepository
 }

@@ -47,10 +47,19 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(state = Lifecycle.State.STARTED) {
                 with (viewModel) {
-                    errorFlow.collect { error ->
-                        when (error) {
-                            AuthErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
-                            AuthErrorEnum.WRONG_CREDENTIALS -> showSnackbar(getString(R.string.wrong_cretentials))
+                    launch {
+                        errorFlow.collect { error ->
+                            when (error) {
+                                AuthErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
+                                AuthErrorEnum.WRONG_CREDENTIALS -> showSnackbar(getString(R.string.wrong_cretentials))
+                            }
+                        }
+                    }
+                    launch {
+                        submitFlow.collect { result ->
+                            if (result) {
+                                findNavController().navigate(R.id.action_authFragment_to_holderFragment)
+                            }
                         }
                     }
                 }

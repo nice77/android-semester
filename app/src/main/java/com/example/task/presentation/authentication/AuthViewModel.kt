@@ -8,6 +8,7 @@ import com.example.task.domain.usecases.AuthenticateUserUseCase
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -20,6 +21,10 @@ class AuthViewModel @AssistedInject constructor(
     private val _errorFlow = MutableSharedFlow<AuthErrorEnum>()
     val errorFlow : SharedFlow<AuthErrorEnum>
         get() = _errorFlow
+
+    private val _submitFlow = MutableSharedFlow<Boolean>()
+    val submitFlow : SharedFlow<Boolean>
+        get() = _submitFlow
 
     @AssistedFactory
     interface Factory {
@@ -38,6 +43,8 @@ class AuthViewModel @AssistedInject constructor(
                     is HttpException -> _errorFlow.emit(AuthErrorEnum.WRONG_CREDENTIALS)
                     is UnknownHostException -> _errorFlow.emit(AuthErrorEnum.UNKNOWN_HOST)
                 }
+            }.onSuccess {
+                _submitFlow.emit(true)
             }
         }
     }
