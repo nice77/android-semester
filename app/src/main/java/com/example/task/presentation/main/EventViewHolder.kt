@@ -18,7 +18,7 @@ class EventViewHolder(
             if (eventDomainModel.eventImages.isNotEmpty()) {
                 eventImg.load("${BuildConfig.PATH}${eventDomainModel.eventImages[0]}")
             }
-            eventTitleTv.text = eventDomainModel.id.toString()
+            eventTitleTv.text = eventDomainModel.title
         }
     }
 }
