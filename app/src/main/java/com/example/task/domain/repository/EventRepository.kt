@@ -7,6 +7,4 @@ interface EventRepository {
     suspend fun getEvent(id : Long) : EventDomainModel
 
     suspend fun getEvents(page : Int) : List<EventDomainModel>
-
-    suspend fun getEventImage(fileName : String) : ByteArray
 }

@@ -2,13 +2,12 @@ package com.example.task.presentation.authentication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.task.domain.models.AuthErrorEnum
+import com.example.task.domain.models.errorEnum.AuthErrorEnum
 import com.example.task.domain.models.request.AuthenticationRequestDomainModel
 import com.example.task.domain.usecases.AuthenticateUserUseCase
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

@@ -4,15 +4,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.task.databinding.ItemTitleBinding
 
 class ItemTitleViewHolder(
-    private val binding : ItemTitleBinding,
-    private val titleId : Int
+    private val binding : ItemTitleBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    init {
-        binding.rvTitleTv.text = binding.root.context.getString(titleId)
-    }
-
-    fun onBind() {
+    fun onBind(titleId : Int) {
         binding.rvTitleTv.text = binding.root.context.getString(titleId)
     }
 }

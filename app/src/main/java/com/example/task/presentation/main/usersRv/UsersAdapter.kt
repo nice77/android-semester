@@ -2,12 +2,12 @@ package com.example.task.presentation.main.usersRv
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.example.task.databinding.ItemUserBinding
 import com.example.task.domain.models.UserDomainModel
 
-class UsersAdapter : ListAdapter<UserDomainModel, UserViewHolder>(ITEM_DIFF) {
+class UsersAdapter : PagingDataAdapter<UserDomainModel, UserViewHolder>(ITEM_DIFF) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(
             binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -15,7 +15,9 @@ class UsersAdapter : ListAdapter<UserDomainModel, UserViewHolder>(ITEM_DIFF) {
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        getItem(position)?.let {
+            holder.onBind(it)
+        }
     }
 
     companion object {

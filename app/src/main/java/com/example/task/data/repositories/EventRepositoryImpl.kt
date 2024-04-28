@@ -13,20 +13,10 @@ class EventRepositoryImpl @Inject constructor(
     private val eventApi: EventApi
 ) : EventRepository {
     override suspend fun getEvent(id: Long): EventDomainModel {
-        return withContext(Dispatchers.IO) {
-            toDomainModelMapper.mapEventResponseToEventDomainModel(eventApi.getEvent(id = id))
-        }
+        return toDomainModelMapper.mapEventResponseToEventDomainModel(eventApi.getEvent(id = id))
     }
 
     override suspend fun getEvents(page: Int): List<EventDomainModel> {
-        return withContext(Dispatchers.IO) {
-            eventApi.getEvents(page = page).map(toDomainModelMapper::mapEventResponseToEventDomainModel)
-        }
-    }
-
-    override suspend fun getEventImage(fileName: String): ByteArray {
-        return withContext(Dispatchers.IO) {
-            eventApi.getEventImage(fileName = fileName)
-        }
+        return eventApi.getEvents(page = page).map(toDomainModelMapper::mapEventResponseToEventDomainModel)
     }
 }

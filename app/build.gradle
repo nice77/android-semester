@@ -80,6 +80,6 @@ dependencies {
     def coilVersion = "2.3.0"
     implementation "io.coil-kt:coil:$coilVersion"
 
-    def localDateTimeVersion = "0.3.2"
-    implementation "org.jetbrains.kotlinx:kotlinx-datetime:$localDateTimeVersion"
+    def pagingVersion = "3.2.1"
+    implementation "androidx.paging:paging-runtime:$pagingVersion"
 }

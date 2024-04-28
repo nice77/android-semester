@@ -2,11 +2,8 @@ package com.example.task.presentation.registration
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.task.domain.models.RegisterErrorEnum
+import com.example.task.domain.models.errorEnum.RegisterErrorEnum
 import com.example.task.domain.models.request.RegisterRequestDomainModel
-import com.example.task.domain.usecases.GetUsersUseCase
 import com.example.task.domain.usecases.RegisterUserUseCase
 import com.example.task.domain.validators.ValidateEmailUseCase
 import com.example.task.domain.validators.ValidatePasswordUseCase

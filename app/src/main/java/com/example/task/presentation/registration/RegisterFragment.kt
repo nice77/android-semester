@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentRegisterBinding
-import com.example.task.domain.models.RegisterErrorEnum
+import com.example.task.domain.models.errorEnum.RegisterErrorEnum
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
 import com.google.android.material.snackbar.Snackbar

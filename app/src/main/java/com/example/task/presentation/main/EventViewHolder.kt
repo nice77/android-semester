@@ -1,4 +1,4 @@
-package com.example.task.presentation.main.eventsRv
+package com.example.task.presentation.main
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -17,9 +17,8 @@ class EventViewHolder(
         binding.run {
             if (eventDomainModel.eventImages.isNotEmpty()) {
                 eventImg.load("${BuildConfig.PATH}${eventDomainModel.eventImages[0]}")
-                println("${BuildConfig.PATH}${eventDomainModel.eventImages[0]}")
             }
-            eventTitleTv.text = eventDomainModel.title
+            eventTitleTv.text = eventDomainModel.id.toString()
         }
     }
 }

@@ -3,7 +3,6 @@ package com.example.task.presentation.authentication
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -11,8 +10,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentAuthBinding
-import com.example.task.domain.models.AuthErrorEnum
-import com.example.task.domain.models.RegisterErrorEnum
+import com.example.task.domain.models.errorEnum.AuthErrorEnum
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -55,11 +53,9 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                             }
                         }
                     }
-                    launch {
-                        submitFlow.collect { result ->
-                            if (result) {
-                                findNavController().navigate(R.id.action_authFragment_to_holderFragment)
-                            }
+                    submitFlow.collect { result ->
+                        if (result) {
+                            findNavController().navigate(R.id.action_authFragment_to_holderFragment)
                         }
                     }
                 }

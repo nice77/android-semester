@@ -1,5 +1,7 @@
 package com.example.task.presentation.main.usersRv
 
+import androidx.lifecycle.Lifecycle
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task.databinding.ItemUsersRecyclerBinding
 import com.example.task.domain.models.UserDomainModel
@@ -8,11 +10,11 @@ class ItemUsersRecyclerVH(
     private val binding: ItemUsersRecyclerBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind() {
+    init {
         binding.usersRv.adapter = UsersAdapter()
     }
 
-    fun updateUsersList(usersList : List<UserDomainModel>) {
-        (binding.usersRv.adapter as UsersAdapter).submitList(usersList)
+    fun updateUsersList(lifecycle: Lifecycle, usersList : PagingData<UserDomainModel>) {
+        (binding.usersRv.adapter as UsersAdapter).submitData(lifecycle = lifecycle, pagingData = usersList)
     }
 }

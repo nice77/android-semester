@@ -5,7 +5,6 @@ import com.example.task.data.di.DataModule
 import com.example.task.data.di.DataModuleBinder
 import com.example.task.presentation.authentication.AuthViewModel
 import com.example.task.presentation.main.MainViewModel
-import com.example.task.presentation.main.eventsRv.EventViewHolder
 import com.example.task.presentation.registration.RegisterViewModel
 import dagger.BindsInstance
 import dagger.Component
