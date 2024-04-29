@@ -5,6 +5,7 @@ import coil.load
 import com.example.task.BuildConfig
 import com.example.task.databinding.ItemUserBinding
 import com.example.task.domain.models.UserDomainModel
+import com.example.task.utils.loadCaching
 
 class UserViewHolder(
     private val binding : ItemUserBinding
@@ -13,7 +14,7 @@ class UserViewHolder(
     fun onBind(userDomainModel: UserDomainModel) {
         binding.run {
             if (userDomainModel.userImage.isNotEmpty()) {
-                userImg.load("${BuildConfig.PATH}${userDomainModel.userImage}")
+                userImg.loadCaching("${BuildConfig.PATH}${userDomainModel.userImage}")
             }
             usernameTv.text = userDomainModel.name
         }

@@ -53,9 +53,11 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                             }
                         }
                     }
-                    submitFlow.collect { result ->
-                        if (result) {
-                            findNavController().navigate(R.id.action_authFragment_to_holderFragment)
+                    launch {
+                        submitFlow.collect { result ->
+                            if (result) {
+                                findNavController().navigate(R.id.action_authFragment_to_holderFragment)
+                            }
                         }
                     }
                 }

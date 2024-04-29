@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.task.databinding.ItemUserBinding
 import com.example.task.domain.models.UserDomainModel
 
@@ -21,7 +23,7 @@ class UsersAdapter : PagingDataAdapter<UserDomainModel, UserViewHolder>(ITEM_DIF
     }
 
     companion object {
-        val ITEM_DIFF : DiffUtil.ItemCallback<UserDomainModel> = object : DiffUtil.ItemCallback<UserDomainModel>() {
+        val ITEM_DIFF: DiffUtil.ItemCallback<UserDomainModel> = object : DiffUtil.ItemCallback<UserDomainModel>() {
             override fun areItemsTheSame(oldItem: UserDomainModel, newItem: UserDomainModel): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -32,7 +34,6 @@ class UsersAdapter : PagingDataAdapter<UserDomainModel, UserViewHolder>(ITEM_DIF
             ): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 }
