@@ -25,6 +25,10 @@ class RegisterViewModel @AssistedInject constructor(
     val errorFlow : SharedFlow<RegisterErrorEnum>
         get() = _errorFlow
 
+    private val _submitFlow = MutableSharedFlow<Boolean>()
+    val submitFlow : SharedFlow<Boolean>
+        get() = _submitFlow
+
     @AssistedFactory
     interface Factory {
         fun create() : RegisterViewModel
@@ -43,6 +47,8 @@ class RegisterViewModel @AssistedInject constructor(
                     is HttpException -> _errorFlow.emit(RegisterErrorEnum.EMAIL_IN_USE)
                     is UnknownHostException -> _errorFlow.emit(RegisterErrorEnum.UNKNOWN_HOST)
                 }
+            }.onSuccess {
+                _submitFlow.emit(true)
             }
         }
     }

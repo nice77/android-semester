@@ -49,6 +49,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
 
             submitBtn.setOnClickListener {
+                it.isEnabled = false
                 viewModel.registerUser(
                     name = binding.nameEt.text.toString(),
                     email = binding.emailEt.text.toString(),
@@ -85,7 +86,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 RegisterErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
                                 RegisterErrorEnum.EMAIL_IN_USE -> showSnackbar(getString(R.string.email_in_use))
                             }
+                            binding.submitBtn.isEnabled = true
                         }
+                    }
+                    submitFlow.collect { result ->
+                        findNavController().navigate(R.id.action_registerFragment_to_holderFragment)
                     }
                 }
             }

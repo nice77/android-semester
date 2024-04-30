@@ -49,15 +49,10 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                     launch {
                         errorFlow.collect { error ->
                             when (error) {
-                                AuthErrorEnum.UNKNOWN_HOST -> {
-                                    showSnackbar(getString(R.string.unknown_host))
-                                    binding.submitBtn.isEnabled = true
-                                }
-                                AuthErrorEnum.WRONG_CREDENTIALS -> {
-                                    showSnackbar(getString(R.string.wrong_cretentials))
-                                    binding.submitBtn.isEnabled = true
-                                }
+                                AuthErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
+                                AuthErrorEnum.WRONG_CREDENTIALS -> showSnackbar(getString(R.string.wrong_cretentials))
                             }
+                            binding.submitBtn.isEnabled = true
                         }
                     }
                     launch {
