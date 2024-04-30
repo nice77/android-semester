@@ -9,6 +9,7 @@ import com.example.task.data.di.qualifiers.NonAuthRetrofitQualifier
 import com.example.task.data.di.qualifiers.RefreshTokenInterceptorQualifier
 import com.example.task.data.local.sharedpreferences.Keys
 import com.example.task.data.remote.datasource.AuthApi
+import com.example.task.data.remote.datasource.EventApi
 import com.example.task.data.remote.datasource.StaticStrings
 import com.example.task.data.remote.datasource.UserApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -70,6 +71,14 @@ class DataModule {
         @AuthRetrofitQualifier retrofit: Retrofit
     ) : UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEventApi(
+        @AuthRetrofitQualifier retrofit: Retrofit
+    ) : EventApi {
+        return retrofit.create(EventApi::class.java)
     }
 
     @Provides

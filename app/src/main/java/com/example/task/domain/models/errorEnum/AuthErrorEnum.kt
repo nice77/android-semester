@@ -1,4 +1,4 @@
-package com.example.task.domain.models
+package com.example.task.domain.models.errorEnum
 
 enum class AuthErrorEnum {
     UNKNOWN_HOST,

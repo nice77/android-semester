@@ -1,7 +1,9 @@
 package com.example.task.data.mapper
 
 import com.example.task.data.remote.datasource.responses.AuthenticationResponse
+import com.example.task.data.remote.datasource.responses.EventResponse
 import com.example.task.data.remote.datasource.responses.UserResponse
+import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.TokensDomainModel
 import com.example.task.domain.models.UserDomainModel
 import javax.inject.Inject
@@ -27,4 +29,18 @@ class ToDomainModelMapper @Inject constructor(
         )
     }
 
+    fun mapEventResponseToEventDomainModel(response: EventResponse) : EventDomainModel {
+        return response.run {
+            EventDomainModel(
+                id = id,
+                date = date,
+                title = title,
+                description = description,
+                latitude = latitude,
+                longitude = longitude,
+                authorId = authorId,
+                eventImages = eventImages
+            )
+        }
+    }
 }

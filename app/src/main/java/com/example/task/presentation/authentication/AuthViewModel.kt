@@ -2,7 +2,7 @@ package com.example.task.presentation.authentication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.task.domain.models.AuthErrorEnum
+import com.example.task.domain.models.errorEnum.AuthErrorEnum
 import com.example.task.domain.models.request.AuthenticationRequestDomainModel
 import com.example.task.domain.usecases.AuthenticateUserUseCase
 import dagger.assisted.AssistedFactory
@@ -21,6 +21,10 @@ class AuthViewModel @AssistedInject constructor(
     val errorFlow : SharedFlow<AuthErrorEnum>
         get() = _errorFlow
 
+    private val _submitFlow = MutableSharedFlow<Boolean>()
+    val submitFlow : SharedFlow<Boolean>
+        get() = _submitFlow
+
     @AssistedFactory
     interface Factory {
         fun create() : AuthViewModel
@@ -38,6 +42,8 @@ class AuthViewModel @AssistedInject constructor(
                     is HttpException -> _errorFlow.emit(AuthErrorEnum.WRONG_CREDENTIALS)
                     is UnknownHostException -> _errorFlow.emit(AuthErrorEnum.UNKNOWN_HOST)
                 }
+            }.onSuccess {
+                _submitFlow.emit(true)
             }
         }
     }

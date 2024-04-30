@@ -2,10 +2,12 @@ package com.example.task.domain.usecases
 
 import com.example.task.data.repositories.UserRepositoryImpl
 import com.example.task.domain.models.request.RegisterRequestDomainModel
+import com.example.task.domain.repository.TokensRepository
 import com.example.task.utils.runSuspendCatching
 import javax.inject.Inject
 
 class RegisterUserUseCase @Inject constructor (
+    private val tokensRepository: TokensRepository,
     private val repository: UserRepositoryImpl
 ) {
 
@@ -13,7 +15,8 @@ class RegisterUserUseCase @Inject constructor (
         request : RegisterRequestDomainModel
     ) : Result<Unit> {
         return runSuspendCatching {
-            repository.register(request)
+            val tokens = repository.register(request)
+            tokensRepository.addTokens(tokens)
         }
     }
 

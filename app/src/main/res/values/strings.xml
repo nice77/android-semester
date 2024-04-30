@@ -20,4 +20,8 @@
     <string name="unknown_host">Check your internet connection</string>
     <string name="email_in_use">Email is in use</string>
     <string name="wrong_cretentials">Wrong credentials!</string>
+    <string name="recommended_users">Recommended users</string>
+    <string name="recommended_events">Recommended events</string>
+    <string name="error_fetching_users">Unknown error while fetching users!</string>
+    <string name="error_fetching_events">Unknown error while fetching events!</string>
 </resources>

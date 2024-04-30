@@ -2,11 +2,8 @@ package com.example.task.presentation.registration
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.task.domain.models.RegisterErrorEnum
+import com.example.task.domain.models.errorEnum.RegisterErrorEnum
 import com.example.task.domain.models.request.RegisterRequestDomainModel
-import com.example.task.domain.usecases.GetUsersUseCase
 import com.example.task.domain.usecases.RegisterUserUseCase
 import com.example.task.domain.validators.ValidateEmailUseCase
 import com.example.task.domain.validators.ValidatePasswordUseCase
@@ -28,6 +25,10 @@ class RegisterViewModel @AssistedInject constructor(
     val errorFlow : SharedFlow<RegisterErrorEnum>
         get() = _errorFlow
 
+    private val _submitFlow = MutableSharedFlow<Boolean>()
+    val submitFlow : SharedFlow<Boolean>
+        get() = _submitFlow
+
     @AssistedFactory
     interface Factory {
         fun create() : RegisterViewModel
@@ -46,6 +47,8 @@ class RegisterViewModel @AssistedInject constructor(
                     is HttpException -> _errorFlow.emit(RegisterErrorEnum.EMAIL_IN_USE)
                     is UnknownHostException -> _errorFlow.emit(RegisterErrorEnum.UNKNOWN_HOST)
                 }
+            }.onSuccess {
+                _submitFlow.emit(true)
             }
         }
     }

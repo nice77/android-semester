@@ -3,6 +3,7 @@ package com.example.task.data.repositories
 import com.example.task.data.remote.datasource.UserApi
 import com.example.task.data.remote.datasource.requests.RegisterRequest
 import com.example.task.data.mapper.ToDomainModelMapper
+import com.example.task.domain.models.TokensDomainModel
 import com.example.task.domain.models.UserDomainModel
 import com.example.task.domain.models.request.RegisterRequestDomainModel
 import com.example.task.domain.repository.UserRepository
@@ -12,12 +13,13 @@ class UserRepositoryImpl @Inject constructor(
     private val userApi: UserApi,
     private val toDomainModelMapper: ToDomainModelMapper
 ) : UserRepository {
-    override suspend fun register(request: RegisterRequestDomainModel) {
-        userApi.register(
-            RegisterRequest(
-                name = request.name,
-                email = request.email,
-                password = request.password
+    override suspend fun register(request: RegisterRequestDomainModel) : TokensDomainModel {
+        return toDomainModelMapper.mapAuthResponseToTokensDomainModel(
+            userApi.register(
+                RegisterRequest(
+                    name = request.name,
+                    email = request.email,
+                    password = request.password)
             )
         )
     }
