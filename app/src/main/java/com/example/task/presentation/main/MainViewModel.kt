@@ -32,7 +32,15 @@ class MainViewModel @AssistedInject constructor(
     ) {
         eventPagingSource
     }.flow
-        .map { pagingData -> pagingData.map { MainUiModel.Event(it) } as PagingData<MainUiModel> }
+        .map { pagingData ->
+            pagingData.map {
+                MainUiModel.Event(
+                    id = it.id,
+                    title = it.title,
+                    eventImages = it.eventImages
+                )
+            } as PagingData<MainUiModel>
+        }
         .map {
             it.insertHeaderItem(item = MainUiModel.Title(R.string.recommended_users))
                 .insertHeaderItem(item = MainUiModel.Users)

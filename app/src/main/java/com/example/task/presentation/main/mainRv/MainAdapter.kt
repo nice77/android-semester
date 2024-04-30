@@ -74,7 +74,7 @@ class MainAdapter(
             ): Boolean {
                 return when {
                     oldItem is MainUiModel.Event && newItem is MainUiModel.Event ->
-                        oldItem.model.id == newItem.model.id
+                        oldItem.id == newItem.id
 
                     oldItem is MainUiModel.Title && newItem is MainUiModel.Title ->
                         oldItem.textRes == newItem.textRes
