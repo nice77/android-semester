@@ -33,6 +33,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 findNavController().navigate(R.id.action_authFragment_to_registerFragment)
             }
             submitBtn.setOnClickListener {
+                it.isEnabled = false
                 viewModel.authenticateUser(
                     email = binding.emailEt.text.toString(),
                     password = binding.passwordEt.text.toString()
@@ -48,8 +49,14 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                     launch {
                         errorFlow.collect { error ->
                             when (error) {
-                                AuthErrorEnum.UNKNOWN_HOST -> showSnackbar(getString(R.string.unknown_host))
-                                AuthErrorEnum.WRONG_CREDENTIALS -> showSnackbar(getString(R.string.wrong_cretentials))
+                                AuthErrorEnum.UNKNOWN_HOST -> {
+                                    showSnackbar(getString(R.string.unknown_host))
+                                    binding.submitBtn.isEnabled = true
+                                }
+                                AuthErrorEnum.WRONG_CREDENTIALS -> {
+                                    showSnackbar(getString(R.string.wrong_cretentials))
+                                    binding.submitBtn.isEnabled = true
+                                }
                             }
                         }
                     }
