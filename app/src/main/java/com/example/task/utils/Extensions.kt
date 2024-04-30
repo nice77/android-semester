@@ -1,10 +1,16 @@
 package com.example.task.utils
 
 import android.content.Context
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import coil.ImageLoader
+import coil.imageLoader
+import coil.load
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.example.task.App
 import com.example.task.di.AppComponent
 import com.example.task.presentation.di.ViewModelFactory
@@ -34,3 +40,13 @@ val Context.component : AppComponent
         is App -> component
         else -> applicationContext.component
     }
+
+inline fun ImageView.loadCaching(
+    data: Any?,
+    imageLoader: ImageLoader = context.imageLoader,
+    crossinline builder: ImageRequest.Builder.() -> Unit = {}
+) = load(data, imageLoader) {
+    memoryCachePolicy(CachePolicy.ENABLED)
+    diskCachePolicy(CachePolicy.ENABLED)
+    builder()
+}
