@@ -5,15 +5,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp">
 
-    <ImageView
-        android:id="@+id/user_image_iv"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/user_image_cv"
         android:layout_width="48dp"
         android:layout_height="48dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="8dp"
-        />
+        app:cardCornerRadius="48dp">
+
+        <ImageView
+            android:id="@+id/user_image_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/border_img"
+            />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/name_tv"
@@ -21,7 +31,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/user_image_iv"
+        app:layout_constraintStart_toEndOf="@id/user_image_cv"
         style="@style/Text.Medium.Medium"
         android:layout_margin="8dp"/>
 

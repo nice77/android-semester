@@ -29,14 +29,16 @@ class SearchViewModel @AssistedInject constructor(
     private val userByNamePagingSourceFactory: UserByNamePagingSource.Factory
 ): ViewModel() {
 
-    private val configFlow = MutableStateFlow(
+    private val _configFlow = MutableStateFlow(
         SearchConfig(
             checkedId = R.id.option_event_rb,
             query = null
         )
     )
+    val configFlow : StateFlow<SearchConfig>
+        get() = _configFlow
 
-    val listItems : StateFlow<PagingData<SearchUiModel>> = configFlow
+    val listItems : StateFlow<PagingData<SearchUiModel>> = _configFlow
         .map { config ->
             when (config.checkedId) {
                 R.id.option_event_rb -> createNewEventPager(config.query ?: "")
@@ -82,7 +84,7 @@ class SearchViewModel @AssistedInject constructor(
 
     fun setupNewSearchConfig(config : SearchConfig) {
         viewModelScope.launch {
-            configFlow.emit(config)
+            _configFlow.emit(config)
         }
     }
 

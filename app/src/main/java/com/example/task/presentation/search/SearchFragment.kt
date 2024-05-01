@@ -28,6 +28,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkedId = viewModel.configFlow.value.checkedId
         binding.searchRv.adapter = SearchAdapter(
             currentItem = checkedId,
             onTextUpdate = ::onTextUpdate,
@@ -53,9 +54,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun onItemCheck(newCheckedId : Int) {
-        checkedId = newCheckedId
         val searchConfig = SearchConfig(
-            checkedId = checkedId,
+            checkedId = newCheckedId,
             query = null
         )
         val adapter = (binding.searchRv.adapter as SearchAdapter)
@@ -71,6 +71,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.configFlow.collectLatest {
+                        checkedId = it.checkedId
+                    }
+                }
                 viewModel.listItems.collectLatest {
                     (binding.searchRv.adapter as SearchAdapter).submitData(it)
                 }
