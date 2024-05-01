@@ -1,7 +1,6 @@
 package com.example.task.presentation.main.mainRv
 
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.task.BuildConfig
 import com.example.task.databinding.ItemEventBinding
 import com.example.task.utils.loadCaching

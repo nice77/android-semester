@@ -6,6 +6,7 @@ import com.example.task.data.di.DataModuleBinder
 import com.example.task.presentation.authentication.AuthViewModel
 import com.example.task.presentation.main.MainViewModel
 import com.example.task.presentation.registration.RegisterViewModel
+import com.example.task.presentation.search.SearchViewModel
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -31,4 +32,6 @@ interface AppComponent {
     fun authViewModel() : AuthViewModel.Factory
 
     fun mainViewModel() : MainViewModel.Factory
+
+    fun searchViewModel() : SearchViewModel.Factory
 }
