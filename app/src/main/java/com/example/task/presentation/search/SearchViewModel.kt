@@ -8,8 +8,12 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.insertHeaderItem
 import androidx.paging.map
+import com.example.task.R
 import com.example.task.data.repositories.paging.EventByNamePagingSource
+import com.example.task.data.repositories.paging.UserByNamePagingSource
 import com.example.task.domain.models.EventDomainModel
+import com.example.task.domain.models.UserDomainModel
+import com.example.task.presentation.search.searchRv.SearchUiModel
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,28 +25,47 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class SearchViewModel @AssistedInject constructor(
-    private val eventByNamePagingSourceFactory: EventByNamePagingSource.Factory
+    private val eventByNamePagingSourceFactory: EventByNamePagingSource.Factory,
+    private val userByNamePagingSourceFactory: UserByNamePagingSource.Factory
 ): ViewModel() {
 
-    private val _query = MutableStateFlow<String?>(null)
-    val query : StateFlow<String?>
-        get() = _query
+    private val configFlow = MutableStateFlow(
+        SearchConfig(
+            checkedId = R.id.option_event_rb,
+            query = null
+        )
+    )
 
-
-    val events : StateFlow<PagingData<SearchUiModel>> = query
-        .map { queryString ->
-            createNewPager(queryString ?: "")
+    val listItems : StateFlow<PagingData<SearchUiModel>> = configFlow
+        .map { config ->
+            when (config.checkedId) {
+                R.id.option_event_rb -> createNewEventPager(config.query ?: "")
+                R.id.option_users_rb -> createNewUsersPager(config.query ?: "")
+                else -> throw NoSuchMethodException()
+            }
         }
         .flatMapLatest { pager ->
             pager
                 .flow
                 .map { pagingData ->
                     pagingData.map {
-                        SearchUiModel.Event(
-                            id = it.id,
-                            title = it.title,
-                            eventImages = it.eventImages
-                        )
+                        when (it) {
+                            is EventDomainModel -> {
+                                SearchUiModel.Event(
+                                    id = it.id,
+                                    title = it.title,
+                                    eventImages = it.eventImages
+                                )
+                            }
+                            is UserDomainModel -> {
+                                SearchUiModel.User(
+                                    id = it.id,
+                                    name = it.name,
+                                    userImage = it.userImage
+                                )
+                            }
+                            else -> NoSuchElementException()
+                        }
                     } as PagingData<SearchUiModel>
                 }
                 .map {
@@ -57,19 +80,33 @@ class SearchViewModel @AssistedInject constructor(
         fun create() : SearchViewModel
     }
 
-    fun setupNewSearchQuery(query : String) {
+    fun setupNewSearchConfig(config : SearchConfig) {
         viewModelScope.launch {
-            _query.emit(query)
+            configFlow.emit(config)
         }
     }
 
-    private fun createNewPager(query : String) : Pager<Int, EventDomainModel> {
+    private fun createNewEventPager(query : String) : Pager<Int, EventDomainModel> {
         return Pager(
             PagingConfig(
-                pageSize = 10
+                pageSize = 10,
+                initialLoadSize = 10,
+                prefetchDistance = 1
             )
         ) {
             eventByNamePagingSourceFactory.create(query)
+        }
+    }
+
+    private fun createNewUsersPager(query : String) : Pager<Int, UserDomainModel> {
+        return Pager(
+            PagingConfig(
+                pageSize = 10,
+                initialLoadSize = 10,
+                prefetchDistance = 1
+            )
+        ) {
+            userByNamePagingSourceFactory.create(query)
         }
     }
 }

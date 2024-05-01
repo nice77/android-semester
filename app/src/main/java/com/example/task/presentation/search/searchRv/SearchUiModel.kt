@@ -1,4 +1,4 @@
-package com.example.task.presentation.search
+package com.example.task.presentation.search.searchRv
 
 sealed interface SearchUiModel {
 
@@ -9,4 +9,10 @@ sealed interface SearchUiModel {
     ) : SearchUiModel
 
     data object SearchBar: SearchUiModel
+
+    data class User(
+        val id : Long,
+        val name : String,
+        val userImage : String
+    ) : SearchUiModel
 }

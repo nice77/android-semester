@@ -19,4 +19,11 @@ interface UserApi {
     suspend fun getUsers(
         @Query("page") page : Int
     ) : List<UserResponse>
+
+    @GET("users")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun getUsersByName(
+        @Query("page") page : Int,
+        @Query("name") name : String
+    ) : List<UserResponse>
 }

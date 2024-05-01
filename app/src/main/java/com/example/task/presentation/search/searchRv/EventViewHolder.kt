@@ -1,4 +1,4 @@
-package com.example.task.presentation.search
+package com.example.task.presentation.search.searchRv
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load

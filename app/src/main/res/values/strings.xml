@@ -24,4 +24,7 @@
     <string name="recommended_events">Recommended events</string>
     <string name="error_fetching_users">Unknown error while fetching users!</string>
     <string name="error_fetching_events">Unknown error while fetching events!</string>
+    <string name="search_for">Search for:</string>
+    <string name="events">Events</string>
+    <string name="users">Users</string>
 </resources>
