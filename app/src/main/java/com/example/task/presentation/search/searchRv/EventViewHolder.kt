@@ -10,8 +10,8 @@ class EventViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun onBind(item : SearchUiModel.Event) {
-        if (item.eventImages.isNotEmpty()) {
-            binding.eventImg.load(BuildConfig.PATH + item.eventImages[0])
+        if (item.eventImage.isNotEmpty()) {
+            binding.eventImg.load(BuildConfig.PATH + item.eventImage[0])
         }
         binding.eventTitleTv.text = item.title
     }

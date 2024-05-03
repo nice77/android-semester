@@ -54,7 +54,7 @@ class SearchViewModel @AssistedInject constructor(
                                 SearchUiModel.Event(
                                     id = it.id,
                                     title = it.title,
-                                    eventImages = it.eventImages
+                                    eventImage = if (it.eventImages.isEmpty()) "" else it.eventImages[0]
                                 )
                             }
                             is UserDomainModel -> {
