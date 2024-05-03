@@ -37,7 +37,7 @@ class MainViewModel @AssistedInject constructor(
                 MainUiModel.Event(
                     id = it.id,
                     title = it.title,
-                    eventImages = it.eventImages
+                    eventImage = it.eventImages[0]
                 )
             } as PagingData<MainUiModel>
         }
