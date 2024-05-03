@@ -39,14 +39,12 @@ class SearchViewModel @AssistedInject constructor(
         get() = _configFlow
 
     val listItems : StateFlow<PagingData<SearchUiModel>> = _configFlow
-        .map { config ->
-            when (config.checkedId) {
+        .flatMapLatest { config ->
+            val pager = when (config.checkedId) {
                 R.id.option_event_rb -> createNewEventPager(config.query ?: "")
                 R.id.option_users_rb -> createNewUsersPager(config.query ?: "")
                 else -> throw NoSuchMethodException()
             }
-        }
-        .flatMapLatest { pager ->
             pager
                 .flow
                 .map { pagingData ->

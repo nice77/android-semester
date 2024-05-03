@@ -21,4 +21,9 @@ class SearchBarViewHolder(
         }
     }
 
+    fun clearSearchBar() {
+        binding.searchEt.text.clear()
+        println("Text: ${binding.searchEt.text}")
+    }
+
 }

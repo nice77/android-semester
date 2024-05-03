@@ -3,6 +3,7 @@ package com.example.task.presentation.search
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -28,13 +29,24 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupResultListener()
         checkedId = viewModel.configFlow.value.checkedId
         binding.searchRv.adapter = SearchAdapter(
-            currentItem = checkedId,
             onTextUpdate = ::onTextUpdate,
             onFilterButtonPressed = ::openFilterBottomFragment
         )
         observeData()
+    }
+
+    private fun setupResultListener() {
+        setFragmentResultListener(
+            FilterBottomFragment.CHECKED_ID_INT
+        ) { key, bundle ->
+            if (key == FilterBottomFragment.CHECKED_ID_INT) {
+                checkedId = bundle.getInt(FilterBottomFragment.CHECKED_ID_INT)
+                onItemCheck(checkedId)
+            }
+        }
     }
 
     private fun onTextUpdate(query : String) {
@@ -46,11 +58,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun openFilterBottomFragment() {
-        val bottomSheet = FilterBottomFragment(
-            checkedId = checkedId,
-            onCheck = ::onItemCheck
-        )
-        bottomSheet.show(childFragmentManager, FilterBottomFragment.FILTER_BOTTOM_FRAGMENT_TAG)
+        val dialog = FilterBottomFragment.getInstance(checkedId)
+        dialog.show(parentFragmentManager, FilterBottomFragment.FILTER_BOTTOM_FRAGMENT_TAG)
     }
 
     private fun onItemCheck(newCheckedId : Int) {
@@ -59,7 +68,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             query = null
         )
         val adapter = (binding.searchRv.adapter as SearchAdapter)
-        adapter.onCurrentItemChange(newCheckedId)
+        adapter.clearSearchBar()
         adapter.submitData(
             lifecycle = lifecycle,
             pagingData = PagingData.empty<SearchUiModel>()

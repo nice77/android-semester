@@ -11,10 +11,11 @@ import com.example.task.databinding.ItemHorizontalUserBinding
 import com.example.task.databinding.ItemSearchBarBinding
 
 class SearchAdapter(
-    private var currentItem : Int,
     private val onTextUpdate: (String) -> Unit,
     private val onFilterButtonPressed: () -> Unit
 ) : PagingDataAdapter<SearchUiModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
+
+    private var searchBar : SearchBarViewHolder? = null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
@@ -26,11 +27,19 @@ class SearchAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_search_bar -> SearchBarViewHolder(
-                binding = ItemSearchBarBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onTextUpdate = onTextUpdate,
-                onFilterButtonPressed = onFilterButtonPressed
-            )
+            R.layout.item_search_bar -> {
+                val toReturn = SearchBarViewHolder(
+                    binding = ItemSearchBarBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ),
+                    onTextUpdate = onTextUpdate,
+                    onFilterButtonPressed = onFilterButtonPressed
+                )
+                searchBar = searchBar ?: toReturn
+                toReturn
+            }
             R.layout.item_event -> EventViewHolder(
                 binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
@@ -42,17 +51,17 @@ class SearchAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> R.layout.item_search_bar
-            else -> when (currentItem) {
-                R.id.option_event_rb -> R.layout.item_event
-                else -> R.layout.item_horizontal_user
-            }
+        return when (getItem(position)) {
+            is SearchUiModel.SearchBar -> R.layout.item_search_bar
+            is SearchUiModel.Event -> R.layout.item_event
+            else -> R.layout.item_horizontal_user
         }
     }
 
-    fun onCurrentItemChange(newValue : Int) {
-        currentItem = newValue
+    fun clearSearchBar() {
+        searchBar?.let {
+            it.clearSearchBar()
+        }
     }
 
     companion object {
@@ -61,6 +70,7 @@ class SearchAdapter(
                 return when {
                     oldItem is SearchUiModel.Event && newItem is SearchUiModel.Event -> oldItem.id == newItem.id
                     oldItem is SearchUiModel.User && newItem is SearchUiModel.User -> oldItem.id == newItem.id
+                    oldItem is SearchUiModel.SearchBar && newItem is SearchUiModel.SearchBar -> true
                     else -> false
                 }
             }
