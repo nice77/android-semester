@@ -11,7 +11,7 @@ class EventViewHolder(
 
     fun onBind(item : SearchUiModel.Event) {
         if (item.eventImage.isNotEmpty()) {
-            binding.eventImg.load(BuildConfig.PATH + item.eventImage[0])
+            binding.eventImg.load(BuildConfig.PATH + item.eventImage)
         }
         binding.eventTitleTv.text = item.title
     }

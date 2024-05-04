@@ -12,7 +12,7 @@ class EventViewHolder(
     fun onBind(uiModel: MainUiModel.Event) {
         binding.run {
             if (uiModel.eventImage.isNotEmpty()) {
-                eventImg.loadCaching("${BuildConfig.PATH}${uiModel.eventImage.first()}")
+                eventImg.loadCaching("${BuildConfig.PATH}${uiModel.eventImage}")
             }
             eventTitleTv.text = uiModel.title
         }

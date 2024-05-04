@@ -21,9 +21,10 @@ class SearchBarViewHolder(
         }
     }
 
-    fun clearSearchBar() {
-        binding.searchEt.text.clear()
-        println("Text: ${binding.searchEt.text}")
+    fun onBind(item : SearchUiModel.SearchBar) {
+        binding.searchEt.setText(item.query)
+        val currentText = binding.searchEt.text.toString()
+        binding.searchEt.setSelection(if (currentText.isEmpty()) 0 else currentText.length)
     }
 
 }

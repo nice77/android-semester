@@ -69,7 +69,7 @@ class SearchViewModel @AssistedInject constructor(
                     } as PagingData<SearchUiModel>
                 }
                 .map {
-                    it.insertHeaderItem(item = SearchUiModel.SearchBar)
+                    it.insertHeaderItem(item = SearchUiModel.SearchBar(query = config.query ?: ""))
                 }
         }
         .cachedIn(viewModelScope)

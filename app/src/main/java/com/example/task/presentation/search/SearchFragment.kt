@@ -7,13 +7,10 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.PagingData
-import androidx.paging.insertHeaderItem
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentSearchBinding
 import com.example.task.presentation.search.searchRv.SearchAdapter
-import com.example.task.presentation.search.searchRv.SearchUiModel
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -66,13 +63,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val searchConfig = SearchConfig(
             checkedId = newCheckedId,
             query = null
-        )
-        val adapter = (binding.searchRv.adapter as SearchAdapter)
-        adapter.clearSearchBar()
-        adapter.submitData(
-            lifecycle = lifecycle,
-            pagingData = PagingData.empty<SearchUiModel>()
-                .insertHeaderItem(item = SearchUiModel.SearchBar)
         )
         viewModel.setupNewSearchConfig(searchConfig)
     }

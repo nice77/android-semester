@@ -8,7 +8,7 @@ sealed interface SearchUiModel {
         val eventImage : String
     ) : SearchUiModel
 
-    data object SearchBar: SearchUiModel
+    data class SearchBar(var query : String): SearchUiModel
 
     data class User(
         val id : Long,

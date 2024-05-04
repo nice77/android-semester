@@ -21,7 +21,8 @@ class SearchAdapter(
         when (val item = getItem(position)) {
             is SearchUiModel.Event -> (holder as EventViewHolder).onBind(item)
             is SearchUiModel.User -> (holder as UserViewHolder).onBind(item)
-            else -> Unit
+            is SearchUiModel.SearchBar -> (holder as SearchBarViewHolder).onBind(item)
+            else -> throw NoSuchElementException()
         }
     }
 
@@ -55,12 +56,6 @@ class SearchAdapter(
             is SearchUiModel.SearchBar -> R.layout.item_search_bar
             is SearchUiModel.Event -> R.layout.item_event
             else -> R.layout.item_horizontal_user
-        }
-    }
-
-    fun clearSearchBar() {
-        searchBar?.let {
-            it.clearSearchBar()
         }
     }
 

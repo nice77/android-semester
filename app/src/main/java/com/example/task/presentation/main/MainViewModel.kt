@@ -42,9 +42,9 @@ class MainViewModel @AssistedInject constructor(
             } as PagingData<MainUiModel>
         }
         .map {
-            it.insertHeaderItem(item = MainUiModel.Title(R.string.recommended_users))
+            it.insertHeaderItem(item = MainUiModel.Title(R.string.recommended_events))
                 .insertHeaderItem(item = MainUiModel.Users)
-                .insertHeaderItem(item = MainUiModel.Title(R.string.recommended_events))
+                .insertHeaderItem(item = MainUiModel.Title(R.string.recommended_users))
         }
         .cachedIn(viewModelScope)
         .stateIn(scope = viewModelScope, SharingStarted.Lazily, PagingData.empty())
