@@ -2,7 +2,6 @@ package com.example.task.presentation.main.mainRv
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +11,6 @@ import com.example.task.databinding.ItemEventBinding
 import com.example.task.databinding.ItemTitleBinding
 import com.example.task.databinding.ItemUsersRecyclerBinding
 import com.example.task.presentation.main.MainViewModel
-import kotlinx.coroutines.CoroutineScope
 
 
 class MainAdapter(

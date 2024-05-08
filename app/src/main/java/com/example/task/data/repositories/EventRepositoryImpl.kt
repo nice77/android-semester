@@ -19,4 +19,11 @@ class EventRepositoryImpl @Inject constructor(
     override suspend fun getEvents(page: Int): List<EventDomainModel> {
         return eventApi.getEvents(page = page).map(toDomainModelMapper::mapEventResponseToEventDomainModel)
     }
+
+    override suspend fun getEventsByTitle(page: Int, title: String): List<EventDomainModel> {
+        return eventApi.getEventsByName(
+            name = title,
+            page = page
+        ).map(toDomainModelMapper::mapEventResponseToEventDomainModel)
+    }
 }

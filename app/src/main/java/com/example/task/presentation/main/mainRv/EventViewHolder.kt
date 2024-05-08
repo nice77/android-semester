@@ -1,7 +1,6 @@
 package com.example.task.presentation.main.mainRv
 
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.task.BuildConfig
 import com.example.task.databinding.ItemEventBinding
 import com.example.task.utils.loadCaching
@@ -12,8 +11,8 @@ class EventViewHolder(
 
     fun onBind(uiModel: MainUiModel.Event) {
         binding.run {
-            if (uiModel.eventImages.isNotEmpty()) {
-                eventImg.loadCaching("${BuildConfig.PATH}${uiModel.eventImages.first()}")
+            if (uiModel.eventImage.isNotEmpty()) {
+                eventImg.loadCaching("${BuildConfig.PATH}${uiModel.eventImage}")
             }
             eventTitleTv.text = uiModel.title
         }

@@ -15,4 +15,8 @@ interface EventApi {
     @GET("events")
     @Headers(StaticStrings.AUTH_HEADER)
     suspend fun getEvents(@Query("page") page : Int) : List<EventResponse>
+
+    @GET("events")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun getEventsByName(@Query("name") name : String, @Query("page") page : Int) : List<EventResponse>
 }

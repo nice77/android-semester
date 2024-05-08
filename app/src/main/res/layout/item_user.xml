@@ -12,7 +12,9 @@
 
         <ImageView
             android:id="@+id/user_img"
+            android:maxWidth="128dp"
             android:layout_width="128dp"
+            android:maxHeight="200dp"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +25,7 @@
             android:id="@+id/username_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Text.Bold.Medium"
+            style="@style/Text.Bold.Small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="16dp"/>

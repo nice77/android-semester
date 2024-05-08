@@ -153,4 +153,10 @@
         <item name="cornerSizeBottomRight">50dp</item>
         <item name="cornerSizeBottomLeft">50dp</item>
     </style>
+    
+    <!--  RadioButton  -->
+    <style name="CustomRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="buttonTint">?attr/colorPrimary</item>
+        <item name="android:textAppearance">@style/Text.Medium.ExtraSmall</item>
+    </style>
 </resources>

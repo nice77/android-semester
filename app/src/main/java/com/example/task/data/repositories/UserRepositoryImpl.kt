@@ -32,4 +32,13 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUsersByName(page: Int, name: String): List<UserDomainModel> {
+        return userApi.getUsersByName(
+            page = page,
+            name = name
+        ).map { userResponse ->
+            toDomainModelMapper.mapUserResponseToUserDomainModel(userResponse)
+        }
+    }
+
 }

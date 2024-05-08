@@ -7,4 +7,6 @@ interface EventRepository {
     suspend fun getEvent(id : Long) : EventDomainModel
 
     suspend fun getEvents(page : Int) : List<EventDomainModel>
+
+    suspend fun getEventsByTitle(page : Int, title : String) : List<EventDomainModel>
 }

@@ -9,4 +9,6 @@ interface UserRepository {
     suspend fun register(request: RegisterRequestDomainModel) : TokensDomainModel
 
     suspend fun getUsers(page : Int = 0) : List<UserDomainModel>
+
+    suspend fun getUsersByName(page : Int, name : String) : List<UserDomainModel>
 }
