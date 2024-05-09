@@ -3,6 +3,7 @@ package com.example.task.data.repositories
 import com.example.task.data.remote.datasource.UserApi
 import com.example.task.data.remote.datasource.requests.RegisterRequest
 import com.example.task.data.mapper.ToDomainModelMapper
+import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.TokensDomainModel
 import com.example.task.domain.models.UserDomainModel
 import com.example.task.domain.models.request.RegisterRequestDomainModel
@@ -39,6 +40,31 @@ class UserRepositoryImpl @Inject constructor(
         ).map { userResponse ->
             toDomainModelMapper.mapUserResponseToUserDomainModel(userResponse)
         }
+    }
+
+    override suspend fun getUsersSubscribedEvents(userId: Long?, page : Int): List<EventDomainModel> {
+        return userApi.getUsersSubscribedEvents(
+            userId = userId ?: getCurrentUserId(),
+            page = page
+        ).map(toDomainModelMapper::mapEventResponseToEventDomainModel)
+    }
+
+    override suspend fun getUsersCreatedEvents(userId: Long?, page: Int): List<EventDomainModel> {
+        return userApi.getUsersCreatedEvents(
+            userId = userId ?: getCurrentUserId(),
+            page = page
+        ).map(toDomainModelMapper::mapEventResponseToEventDomainModel)
+    }
+
+    override suspend fun getCurrentUserId(): Long {
+        return userApi.getCurrentUserId()
+    }
+
+    override suspend fun getUser(userId: Long?): UserDomainModel {
+        userId?.let {
+            return toDomainModelMapper.mapUserResponseToUserDomainModel(userApi.getUser(userId = userId))
+        }
+        return toDomainModelMapper.mapUserResponseToUserDomainModel(userApi.getUser(getCurrentUserId()))
     }
 
 }

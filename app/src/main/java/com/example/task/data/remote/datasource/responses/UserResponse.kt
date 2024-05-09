@@ -16,5 +16,9 @@ data class UserResponse(
     @SerialName("city")
     val city : String,
     @SerialName("userImage")
-    val userImage : String
+    val userImage : String,
+    @SerialName("authorsCount")
+    val authorsCount : Int,
+    @SerialName("subscribersCount")
+    val subscribersCount : Int
 )

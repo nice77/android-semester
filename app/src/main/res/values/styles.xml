@@ -144,19 +144,25 @@
 
 
     <!--  User CardView  -->
-    <style name="UserCardView" parent="Widget.MaterialComponents.CardView">
+    <style name="UserCardView" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
     </style>
 
     <style name="ShapeAppearanceOverlay_card_custom_corners">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomRight">50dp</item>
-        <item name="cornerSizeBottomLeft">50dp</item>
+        <item name="cornerSizeBottomRight">48dp</item>
+        <item name="cornerSizeBottomLeft">48dp</item>
     </style>
     
     <!--  RadioButton  -->
     <style name="CustomRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
         <item name="buttonTint">?attr/colorPrimary</item>
         <item name="android:textAppearance">@style/Text.Medium.ExtraSmall</item>
+    </style>
+
+    <style name="ProfileFilterRadioButton" parent="CustomRadioButton">
+        <item name="android:button">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/filter_radio_button_text_selector_bg</item>
+        <item name="android:textAppearance">@style/Text.Medium.Small</item>
     </style>
 </resources>

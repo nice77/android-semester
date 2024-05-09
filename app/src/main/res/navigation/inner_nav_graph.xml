@@ -11,4 +11,8 @@
         android:id="@+id/searchFragment"
         android:name="com.example.task.presentation.search.SearchFragment"
         android:label="FragmentSearch" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.task.presentation.profile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

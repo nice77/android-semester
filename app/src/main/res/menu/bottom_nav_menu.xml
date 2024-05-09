@@ -9,7 +9,7 @@
         android:icon="@drawable/lens_icon"
         android:title="@string/search"/>
     <item
-        android:id="@+id/userFragment"
+        android:id="@+id/profileFragment"
         android:icon="@drawable/user_icon"
         android:title="@string/profile"/>
 </menu>

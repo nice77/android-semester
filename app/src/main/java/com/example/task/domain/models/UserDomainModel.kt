@@ -7,5 +7,7 @@ data class UserDomainModel(
     val age : Int,
     val email : String,
     val city : String,
-    val userImage : String
+    val userImage : String,
+    val authorsCount : Int,
+    val subscribersCount : Int
 )

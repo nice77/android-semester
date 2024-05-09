@@ -25,7 +25,9 @@ class ToDomainModelMapper @Inject constructor(
             age = response.age,
             email = response.email,
             city = response.city,
-            userImage = response.userImage
+            userImage = response.userImage,
+            authorsCount = response.authorsCount,
+            subscribersCount = response.subscribersCount
         )
     }
 

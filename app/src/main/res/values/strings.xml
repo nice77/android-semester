@@ -27,4 +27,9 @@
     <string name="search_for">Search for:</string>
     <string name="events">Events</string>
     <string name="users">Users</string>
+    <string name="followers">Followers</string>
+    <string name="followees">Followees</string>
+    <string name="create_new_event">Create new event</string>
+    <string name="created">Created</string>
+    <string name="subscribed">Subscribed</string>
 </resources>
