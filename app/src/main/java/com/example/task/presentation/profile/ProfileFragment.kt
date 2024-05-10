@@ -22,7 +22,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
     private val binding : FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
 
-    private var checkedId = R.id.created_events_rb
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +32,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun onRadioButtonChecked(radioButtonId : Int) {
-        checkedId = radioButtonId
         viewModel.emitNewCheckedItem(radioButtonId)
     }
 

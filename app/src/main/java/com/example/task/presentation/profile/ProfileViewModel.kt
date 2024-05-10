@@ -43,7 +43,6 @@ class ProfileViewModel @AssistedInject constructor(
 
     val eventList : StateFlow<PagingData<ProfileUIModel>> = _checkedItem
         .flatMapLatest { currCheckedItem ->
-            println("currCheckedItem: $currCheckedItem")
             val pager = when (currCheckedItem) {
                 R.id.created_events_rb -> createNewCreatedEventsPager()
                 R.id.subscribed_events_rb -> createNewSubscribedEventsPager()
@@ -52,7 +51,6 @@ class ProfileViewModel @AssistedInject constructor(
             pager
                 .flow.map { pagingData ->
                     pagingData.map {
-                        println("got: $it")
                         ProfileUIModel.Event(
                             id = it.id,
                             title = it.title,
@@ -90,7 +88,6 @@ class ProfileViewModel @AssistedInject constructor(
                 prefetchDistance = 1
             )
         ) {
-            println("Returning pg1 (created)")
             userCreatedEventPagingSourceFactory.create(userId = userId)
         }
     }
@@ -103,7 +100,6 @@ class ProfileViewModel @AssistedInject constructor(
                 prefetchDistance = 1
             )
         ) {
-            println("Returning pg2 (subbed)")
             userSubscribedEventPagingSourceFactory.create(userId = userId)
         }
     }

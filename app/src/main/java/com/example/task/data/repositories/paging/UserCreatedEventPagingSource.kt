@@ -25,7 +25,6 @@ class UserCreatedEventPagingSource @AssistedInject constructor(
         return try {
             val page = params.key ?: 0
             val responseList = userRepository.getUsersCreatedEvents(userId = userId, page = page)
-            println("Got in paging source 1: $responseList")
             val nextPageNumber = if (responseList.size < params.loadSize) null else page + 1
             val prevKeyNumber = if (page == 0) null else page - 1
             LoadResult.Page(
