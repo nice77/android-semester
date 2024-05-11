@@ -71,7 +71,8 @@ class ProfileViewModel @AssistedInject constructor(
                             city = it.city,
                             userImage = it.userImage,
                             subscribersCount = it.subscribersCount,
-                            authorsCount = it.authorsCount
+                            authorsCount = it.authorsCount,
+                            isCurrentUser = userId == null
                         ))
                     }
                     newPagingData

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentProfileBinding
@@ -26,9 +27,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.profileRv.adapter = ProfileAdapter(
-            onRadioButtonChecked = ::onRadioButtonChecked
+            onRadioButtonChecked = ::onRadioButtonChecked,
+            onEditButtonPressed = ::onEditButtonPressed
         )
         observeData()
+    }
+
+    private fun onEditButtonPressed() {
+        findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
     }
 
     private fun onRadioButtonChecked(radioButtonId : Int) {

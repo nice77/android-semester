@@ -1,13 +1,19 @@
 package com.example.task.data.remote.datasource
 
 import com.example.task.data.remote.datasource.requests.RegisterRequest
+import com.example.task.data.remote.datasource.requests.UserRequest
 import com.example.task.data.remote.datasource.responses.AuthenticationResponse
 import com.example.task.data.remote.datasource.responses.EventResponse
 import com.example.task.data.remote.datasource.responses.UserResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -50,4 +56,13 @@ interface UserApi {
     @GET("users/{id}")
     @Headers(StaticStrings.AUTH_HEADER)
     suspend fun getUser(@Path("id") userId : Long) : UserResponse
+
+    @PATCH("users")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun updateUser(@Body userRequest : UserRequest) : Boolean
+
+    @POST("users/user-image")
+    @Headers(StaticStrings.AUTH_HEADER)
+    @Multipart
+    suspend fun updateUserImage(@Part userImage : MultipartBody.Part) : String
 }

@@ -10,7 +10,8 @@ sealed interface ProfileUIModel {
         val city : String,
         val userImage : String,
         val subscribersCount : Int,
-        val authorsCount : Int
+        val authorsCount : Int,
+        val isCurrentUser : Boolean
     ) : ProfileUIModel
 
     data object Buttons : ProfileUIModel

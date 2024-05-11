@@ -11,7 +11,8 @@ import com.example.task.databinding.ItemFilterButtonsBinding
 import com.example.task.databinding.ItemUserCardBinding
 
 class ProfileAdapter(
-    private val onRadioButtonChecked: (Int) -> Unit
+    private val onRadioButtonChecked: (Int) -> Unit,
+    private val onEditButtonPressed: () -> Unit
 ) : PagingDataAdapter<ProfileUIModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -25,7 +26,8 @@ class ProfileAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             R.layout.item_user_card -> UserViewHolder(
-                binding = ItemUserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                binding = ItemUserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onEditButtonPressed = onEditButtonPressed
             )
             R.layout.item_filter_buttons -> ButtonsViewHolder(
                 binding = ItemFilterButtonsBinding.inflate(LayoutInflater.from(parent.context), parent, false),
