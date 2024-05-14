@@ -26,6 +26,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val bundle = findNavController().currentBackStackEntry?.savedStateHandle?.get<Bundle>(IS_MODIFIED_KEY)
+        bundle?.let {
+            val newConfig = viewModel.checkedItem.value.copy(onEditButtonPressed = it.getBoolean(IS_MODIFIED_KEY))
+            viewModel.emitNewProfileConfig(newConfig)
+        }
+
         binding.profileRv.adapter = ProfileAdapter(
             onRadioButtonChecked = ::onRadioButtonChecked,
             onEditButtonPressed = ::onEditButtonPressed
@@ -38,7 +45,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun onRadioButtonChecked(radioButtonId : Int) {
-        viewModel.emitNewCheckedItem(radioButtonId)
+        val profileConfig = ProfileConfig(
+            checkedItem = radioButtonId
+        )
+        viewModel.emitNewProfileConfig(profileConfig)
     }
 
     private fun observeData() {
@@ -53,5 +63,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     companion object {
         const val USER_ID_KEY = "USER_ID_KEY"
+        const val IS_MODIFIED_KEY = "IS_MODIFIED_KEY"
     }
 }

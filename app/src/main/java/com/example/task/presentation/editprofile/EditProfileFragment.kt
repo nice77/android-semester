@@ -13,6 +13,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.BuildConfig
 import com.example.task.R
 import com.example.task.databinding.FragmentEditProfileBinding
+import com.example.task.presentation.profile.ProfileFragment
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
 import com.example.task.utils.loadCaching
@@ -65,7 +66,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 launch {
                     viewModel.submitFlow.collect {
                         if (it) {
-                            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+                            val bundle = Bundle()
+                            bundle.putBoolean(ProfileFragment.IS_MODIFIED_KEY, true)
+                            findNavController().previousBackStackEntry?.savedStateHandle?.set(ProfileFragment.IS_MODIFIED_KEY, bundle)
+                            findNavController().navigateUp()
                         } else {
                             binding.submitBtn.isEnabled = true
                         }
