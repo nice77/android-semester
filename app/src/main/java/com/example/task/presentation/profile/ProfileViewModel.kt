@@ -35,11 +35,11 @@ class ProfileViewModel @AssistedInject constructor(
 
     private var currentUser : UserDomainModel? = null
 
-    private val _checkedItem = MutableStateFlow(ProfileConfig(checkedItem = R.id.created_events_rb))
-    val checkedItem : StateFlow<ProfileConfig>
-        get() = _checkedItem
+    private val _profileConfigFlow = MutableStateFlow(ProfileConfig(checkedItem = R.id.created_events_rb))
+    val profileConfigFlow : StateFlow<ProfileConfig>
+        get() = _profileConfigFlow
 
-    val eventList : StateFlow<PagingData<ProfileUIModel>> = _checkedItem
+    val eventList : StateFlow<PagingData<ProfileUIModel>> = _profileConfigFlow
         .flatMapLatest { profileConfig ->
             val pager = when (profileConfig.checkedItem) {
                 R.id.created_events_rb -> createNewCreatedEventsPager()
@@ -63,6 +63,9 @@ class ProfileViewModel @AssistedInject constructor(
                         getUserUseCase(userId = userId).onSuccess {
                             currentUser = it
                         }
+                        _profileConfigFlow.value = _profileConfigFlow.value.copy(
+                            onEditButtonPressed = false
+                        )
                     }
                     currentUser?.let {
                         newPagingData = newPagingData.insertHeaderItem(item = ProfileUIModel.User(
@@ -109,7 +112,7 @@ class ProfileViewModel @AssistedInject constructor(
 
     fun emitNewProfileConfig(profileConfig: ProfileConfig) {
         viewModelScope.launch {
-            _checkedItem.emit(profileConfig)
+            _profileConfigFlow.emit(profileConfig)
         }
     }
 

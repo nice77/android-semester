@@ -29,7 +29,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         val bundle = findNavController().currentBackStackEntry?.savedStateHandle?.get<Bundle>(IS_MODIFIED_KEY)
         bundle?.let {
-            val newConfig = viewModel.checkedItem.value.copy(onEditButtonPressed = it.getBoolean(IS_MODIFIED_KEY))
+            val newConfig = viewModel.profileConfigFlow.value.copy(onEditButtonPressed = it.getBoolean(IS_MODIFIED_KEY))
             viewModel.emitNewProfileConfig(newConfig)
         }
 
