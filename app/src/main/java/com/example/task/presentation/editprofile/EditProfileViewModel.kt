@@ -3,6 +3,7 @@ package com.example.task.presentation.editprofile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task.domain.models.UserDomainModel
+import com.example.task.domain.models.UserUpdateDomainModel
 import com.example.task.domain.usecases.GetUserUseCase
 import com.example.task.domain.usecases.UpdateUserImageUseCase
 import com.example.task.domain.usecases.UpdateUserUseCase
@@ -23,10 +24,6 @@ class EditProfileViewModel @AssistedInject constructor(
     val userFlow : StateFlow<UserDomainModel?>
         get() = _userFlow
 
-    private val _imageNameFlow = MutableStateFlow<String?>(null)
-    val imageNameFlow : StateFlow<String?>
-        get() = _imageNameFlow
-
     private val _submitFlow = MutableStateFlow(false)
     val submitFlow : StateFlow<Boolean>
         get() = _submitFlow
@@ -41,16 +38,19 @@ class EditProfileViewModel @AssistedInject constructor(
 
     fun updateUserImage(inputStream: InputStream?) {
         viewModelScope.launch {
-            updateUserImageUseCase(inputStream).onSuccess {
-                _imageNameFlow.emit(it)
-            }
+            updateUserImageUseCase(inputStream)
         }
     }
 
-    fun onSubmitButtonClicked(userDomainModel: UserDomainModel) {
+    fun onSubmitButtonClicked(name : String, age : Int, city : String) {
+        val userUpdateDomainModel = UserUpdateDomainModel(
+            name = name,
+            age = age,
+            city = city
+        )
         viewModelScope.launch {
-            updateUserUseCase(userDomainModel = userDomainModel).onSuccess {
-                _submitFlow.emit(it)
+            updateUserUseCase(userUpdateDomainModel = userUpdateDomainModel).onSuccess {
+                _submitFlow.emit(true)
             }
         }
     }

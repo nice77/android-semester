@@ -4,10 +4,11 @@ import com.example.task.data.remote.datasource.UserApi
 import com.example.task.data.remote.datasource.requests.RegisterRequest
 import com.example.task.data.mapper.ToDomainModelMapper
 import com.example.task.data.remote.datasource.StaticStrings
-import com.example.task.data.remote.datasource.requests.UserRequest
+import com.example.task.data.remote.datasource.requests.UserUpdateRequest
 import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.TokensDomainModel
 import com.example.task.domain.models.UserDomainModel
+import com.example.task.domain.models.UserUpdateDomainModel
 import com.example.task.domain.models.request.RegisterRequestDomainModel
 import com.example.task.domain.repository.UserRepository
 import okhttp3.MultipartBody
@@ -72,14 +73,14 @@ class UserRepositoryImpl @Inject constructor(
         return toDomainModelMapper.mapUserResponseToUserDomainModel(userApi.getUser(getCurrentUserId()))
     }
 
-    override suspend fun updateUser(userDomainModel: UserDomainModel) : Boolean {
-        return userApi.updateUser(UserRequest(
-            id = userDomainModel.id,
-            name = userDomainModel.name,
-            age = userDomainModel.age,
-            email = userDomainModel.email,
-            city = userDomainModel.city,
-            userImage = userDomainModel.userImage
+    override suspend fun updateUser(userUpdateDomainModel: UserUpdateDomainModel) {
+        val userToUpdateId = getUser(null)
+        userApi.updateUser(UserUpdateRequest(
+            id = userToUpdateId.id,
+            name = userUpdateDomainModel.name,
+            age = userUpdateDomainModel.age,
+            email = userToUpdateId.email,
+            city = userUpdateDomainModel.city
         ))
     }
 

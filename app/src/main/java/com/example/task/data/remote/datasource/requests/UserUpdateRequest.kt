@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserRequest (
+data class UserUpdateRequest (
     @SerialName("id")
     val id : Long,
     @SerialName("name")
@@ -14,7 +14,5 @@ data class UserRequest (
     @SerialName("email")
     val email : String,
     @SerialName("city")
-    val city : String,
-    @SerialName("userImage")
-    val userImage : String
+    val city : String
 )

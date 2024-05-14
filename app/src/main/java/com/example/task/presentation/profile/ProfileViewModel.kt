@@ -15,13 +15,10 @@ import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.UserDomainModel
 import com.example.task.domain.usecases.GetUserUseCase
 import com.example.task.presentation.profile.profileRv.ProfileUIModel
-import com.example.task.presentation.search.searchRv.SearchUiModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -36,6 +33,7 @@ class ProfileViewModel @AssistedInject constructor(
     @Assisted private val userId : Long?
 ) : ViewModel() {
 
+    private var currentUser : UserDomainModel? = null
 
     private val _checkedItem = MutableStateFlow(R.id.created_events_rb)
     val checkedItem : StateFlow<Int>
@@ -61,8 +59,12 @@ class ProfileViewModel @AssistedInject constructor(
                 .map { pagingData ->
                     var newPagingData : PagingData<ProfileUIModel>
                     newPagingData = pagingData.insertHeaderItem(item = ProfileUIModel.Buttons)
-                    val userResult = getUserUseCase(userId = userId)
-                    userResult.onSuccess {
+                    if (currentUser == null) {
+                        getUserUseCase(userId = userId).onSuccess {
+                            currentUser = it
+                        }
+                    }
+                    currentUser?.let {
                         newPagingData = newPagingData.insertHeaderItem(item = ProfileUIModel.User(
                             id = it.id,
                             name = it.name,

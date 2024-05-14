@@ -3,6 +3,7 @@ package com.example.task.domain.repository
 import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.TokensDomainModel
 import com.example.task.domain.models.UserDomainModel
+import com.example.task.domain.models.UserUpdateDomainModel
 import com.example.task.domain.models.request.RegisterRequestDomainModel
 import java.io.File
 
@@ -22,7 +23,7 @@ interface UserRepository {
 
     suspend fun getUser(userId : Long?) : UserDomainModel
 
-    suspend fun updateUser(userDomainModel: UserDomainModel) : Boolean
+    suspend fun updateUser(userUpdateDomainModel: UserUpdateDomainModel)
 
     suspend fun updateUserImage(file : File) : String
 }

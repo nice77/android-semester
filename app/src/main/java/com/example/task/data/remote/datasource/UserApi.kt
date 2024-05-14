@@ -1,12 +1,11 @@
 package com.example.task.data.remote.datasource
 
 import com.example.task.data.remote.datasource.requests.RegisterRequest
-import com.example.task.data.remote.datasource.requests.UserRequest
+import com.example.task.data.remote.datasource.requests.UserUpdateRequest
 import com.example.task.data.remote.datasource.responses.AuthenticationResponse
 import com.example.task.data.remote.datasource.responses.EventResponse
 import com.example.task.data.remote.datasource.responses.UserResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -59,7 +58,7 @@ interface UserApi {
 
     @PATCH("users")
     @Headers(StaticStrings.AUTH_HEADER)
-    suspend fun updateUser(@Body userRequest : UserRequest) : Boolean
+    suspend fun updateUser(@Body userUpdateRequest : UserUpdateRequest) : Boolean
 
     @POST("users/user-image")
     @Headers(StaticStrings.AUTH_HEADER)

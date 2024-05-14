@@ -1,6 +1,7 @@
 package com.example.task.presentation.profile.profileRv
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task.BuildConfig
 import com.example.task.databinding.ItemUserCardBinding
@@ -24,9 +25,7 @@ class UserViewHolder(
             userNameTv.text = uiModel.name
             authorsCountTv.text = uiModel.authorsCount.toString()
             followersCountTv.text = uiModel.subscribersCount.toString()
-            if (uiModel.isCurrentUser) {
-                editIv.visibility = View.VISIBLE
-            }
+            editIv.isVisible = uiModel.isCurrentUser
         }
     }
 
