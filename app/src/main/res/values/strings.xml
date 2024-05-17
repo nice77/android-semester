@@ -27,4 +27,11 @@
     <string name="search_for">Search for:</string>
     <string name="events">Events</string>
     <string name="users">Users</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="light_theme">Light theme</string>
+    <string name="submit">Submit</string>
+    <string name="choose_mode">Choose Mode</string>
+    <string name="get_started">Get Started</string>
+    <string name="take_part_in_city_s_life">Take part in city\'s life!</string>
+    <string name="welcome_text">Find events all around your town or create your own, make new friends and enjoy being part of a large community!</string>
 </resources>
