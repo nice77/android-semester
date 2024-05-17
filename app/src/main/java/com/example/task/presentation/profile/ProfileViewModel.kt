@@ -115,10 +115,8 @@ class ProfileViewModel @AssistedInject constructor(
     }
 
     fun reloadProfileData() {
-        viewModelScope.launch {
-            currentUser = null
-            currentSource?.invalidate()
-        }
+        currentUser = null
+        currentSource?.invalidate()
     }
 
     fun checkNewItem(checkedItemId : Int) {
