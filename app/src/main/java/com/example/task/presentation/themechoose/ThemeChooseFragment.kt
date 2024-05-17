@@ -22,14 +22,14 @@ class ThemeChooseFragment : Fragment(R.layout.fragment_theme_choose) {
         super.onViewCreated(view, savedInstanceState)
         binding.submitBtn.setOnClickListener {
             viewModel.setCurrentDestination(R.id.selectFragment)
-//            AppCompatDelegate.setDefaultNightMode(
-//                when (binding.themeRg.checkedRadioButtonId) {
-//                    R.id.theme_light_rb -> AppCompatDelegate.MODE_NIGHT_NO
-//                    R.id.theme_dark_rb -> AppCompatDelegate.MODE_NIGHT_YES
-//                    else -> throw RuntimeException()
-//                }
-//            )
-//            activity?.recreate()
+            AppCompatDelegate.setDefaultNightMode(
+                when (binding.themeRg.checkedRadioButtonId) {
+                    R.id.theme_light_rb -> AppCompatDelegate.MODE_NIGHT_NO
+                    R.id.theme_dark_rb -> AppCompatDelegate.MODE_NIGHT_YES
+                    else -> throw RuntimeException()
+                }
+            )
+            activity?.recreate()
             findNavController().navigate(R.id.action_themeChooseFragment_to_selectFragment)
         }
     }
