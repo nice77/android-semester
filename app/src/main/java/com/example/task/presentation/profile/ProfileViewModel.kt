@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import androidx.paging.insertHeaderItem
 import androidx.paging.map
@@ -35,13 +36,15 @@ class ProfileViewModel @AssistedInject constructor(
 
     private var currentUser : UserDomainModel? = null
 
-    private val _profileConfigFlow = MutableStateFlow(ProfileConfig(checkedItem = R.id.created_events_rb))
-    val profileConfigFlow : StateFlow<ProfileConfig>
+    private val _profileConfigFlow = MutableStateFlow(R.id.created_events_rb)
+    val profileConfigFlow : StateFlow<Int>
         get() = _profileConfigFlow
 
+    private var currentSource : PagingSource<Int, EventDomainModel>? = null
+
     val eventList : StateFlow<PagingData<ProfileUIModel>> = _profileConfigFlow
-        .flatMapLatest { profileConfig ->
-            val pager = when (profileConfig.checkedItem) {
+        .flatMapLatest { checkedItem ->
+            val pager = when (checkedItem) {
                 R.id.created_events_rb -> createNewCreatedEventsPager()
                 R.id.subscribed_events_rb -> createNewSubscribedEventsPager()
                 else -> throw NoSuchMethodException()
@@ -59,13 +62,10 @@ class ProfileViewModel @AssistedInject constructor(
                 .map { pagingData ->
                     var newPagingData : PagingData<ProfileUIModel>
                     newPagingData = pagingData.insertHeaderItem(item = ProfileUIModel.Buttons)
-                    if (profileConfig.onEditButtonPressed || currentUser == null) {
+                    if (currentUser == null) {
                         getUserUseCase(userId = userId).onSuccess {
                             currentUser = it
                         }
-                        _profileConfigFlow.value = _profileConfigFlow.value.copy(
-                            onEditButtonPressed = false
-                        )
                     }
                     currentUser?.let {
                         newPagingData = newPagingData.insertHeaderItem(item = ProfileUIModel.User(
@@ -94,7 +94,9 @@ class ProfileViewModel @AssistedInject constructor(
                 prefetchDistance = 1
             )
         ) {
-            userCreatedEventPagingSourceFactory.create(userId = userId)
+            val userCreatedEventPagingSource = userCreatedEventPagingSourceFactory.create(userId = userId)
+            currentSource = userCreatedEventPagingSource
+            userCreatedEventPagingSource
         }
     }
 
@@ -106,13 +108,22 @@ class ProfileViewModel @AssistedInject constructor(
                 prefetchDistance = 1
             )
         ) {
-            userSubscribedEventPagingSourceFactory.create(userId = userId)
+            val userSubscribedEventPagingSource = userSubscribedEventPagingSourceFactory.create(userId = userId)
+            currentSource = userSubscribedEventPagingSource
+            userSubscribedEventPagingSource
         }
     }
 
-    fun emitNewProfileConfig(profileConfig: ProfileConfig) {
+    fun reloadProfileData() {
         viewModelScope.launch {
-            _profileConfigFlow.emit(profileConfig)
+            currentUser = null
+            currentSource?.invalidate()
+        }
+    }
+
+    fun checkNewItem(checkedItemId : Int) {
+        viewModelScope.launch {
+            _profileConfigFlow.emit(checkedItemId)
         }
     }
 

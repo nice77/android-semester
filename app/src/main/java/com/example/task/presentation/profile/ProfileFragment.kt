@@ -29,8 +29,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         val bundle = findNavController().currentBackStackEntry?.savedStateHandle?.get<Bundle>(IS_MODIFIED_KEY)
         bundle?.let {
-            val newConfig = viewModel.profileConfigFlow.value.copy(onEditButtonPressed = it.getBoolean(IS_MODIFIED_KEY))
-            viewModel.emitNewProfileConfig(newConfig)
+            viewModel.reloadProfileData()
         }
 
         binding.profileRv.adapter = ProfileAdapter(
@@ -45,10 +44,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun onRadioButtonChecked(radioButtonId : Int) {
-        val profileConfig = ProfileConfig(
-            checkedItem = radioButtonId
-        )
-        viewModel.emitNewProfileConfig(profileConfig)
+        viewModel.checkNewItem(checkedItemId = radioButtonId)
     }
 
     private fun observeData() {

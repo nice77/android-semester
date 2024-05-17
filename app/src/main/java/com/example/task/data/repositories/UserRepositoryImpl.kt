@@ -67,10 +67,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUser(userId: Long?): UserDomainModel {
-        userId?.let {
-            return toDomainModelMapper.mapUserResponseToUserDomainModel(userApi.getUser(userId = userId))
-        }
-        return toDomainModelMapper.mapUserResponseToUserDomainModel(userApi.getUser(getCurrentUserId()))
+        return toDomainModelMapper.mapUserResponseToUserDomainModel(userApi.getUser(userId ?: getCurrentUserId()))
     }
 
     override suspend fun updateUser(userUpdateDomainModel: UserUpdateDomainModel) {
