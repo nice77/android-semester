@@ -28,7 +28,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         val bundle = findNavController().currentBackStackEntry?.savedStateHandle?.get<Bundle>(IS_MODIFIED_KEY)
-        println("Bundle: $bundle")
         bundle?.let {
             viewModel.reloadProfileData()
             findNavController().currentBackStackEntry?.savedStateHandle?.set(IS_MODIFIED_KEY, null)
