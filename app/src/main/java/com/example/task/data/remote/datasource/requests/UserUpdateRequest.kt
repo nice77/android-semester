@@ -1,10 +1,10 @@
-package com.example.task.data.remote.datasource.responses
+package com.example.task.data.remote.datasource.requests
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserResponse(
+data class UserUpdateRequest (
     @SerialName("id")
     val id : Long,
     @SerialName("name")
@@ -14,11 +14,5 @@ data class UserResponse(
     @SerialName("email")
     val email : String,
     @SerialName("city")
-    val city : String,
-    @SerialName("userImage")
-    val userImage : String,
-    @SerialName("authorsCount")
-    val authorsCount : Int,
-    @SerialName("subscribersCount")
-    val subscribersCount : Int
+    val city : String
 )
