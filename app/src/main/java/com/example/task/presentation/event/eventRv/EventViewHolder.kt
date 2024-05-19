@@ -1,0 +1,78 @@
+package com.example.task.presentation.event.eventRv
+
+import android.icu.text.DateFormat
+import android.icu.util.Calendar
+import android.util.DisplayMetrics
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.example.task.BuildConfig
+import com.example.task.R
+import com.example.task.databinding.ItemCurrentEventBinding
+import com.example.task.utils.loadCaching
+
+class EventViewHolder(
+    private val binding: ItemCurrentEventBinding,
+    private val onEventSubscribed: () -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
+
+    private var currentAuthorName : String? = null
+
+    init {
+        binding.joinBtn.setOnClickListener {
+            onEventSubscribed()
+            updateSubState()
+        }
+    }
+
+    fun onBind(item : EventUiModel.Event) {
+        binding.run {
+            eventIv.loadCaching(BuildConfig.PATH + item.eventImages[0])
+            titleTv.text = item.title
+            println("Item size: ${item.description.length}")
+            subtitleTv.text = item.description.ifEmpty { binding.root.context.getString(R.string.no_description) }
+            calendar.timeInMillis = item.date.time
+            dateTv.text = dateFormat.format(calendar)
+
+            var width = root.resources.displayMetrics.xdpi.toInt()
+            var height = 270 * (root.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
+            width = if (width > 650) 650 else width
+            height = if (height > 450) 450 else height
+            val pointInfo = "${item.latitude},${item.longitude},org"
+            mapIv.loadCaching("${BuildConfig.STATIC_MAP_URI}apikey=${BuildConfig.STATIC_MAP_KEY}&ll=${item.latitude},${item.longitude}&z=16&size=$width,$height&pt=$pointInfo")
+        }
+    }
+
+    fun updateUserName(userName : String) {
+        if (currentAuthorName == null) {
+            currentAuthorName = userName
+        }
+        val text = "${binding.root.context.getString(R.string.author)} $userName"
+        binding.authorNameTv.text = text
+    }
+
+    fun showEditButton() {
+        binding.editBtn.isVisible = true
+    }
+
+    private fun updateSubState() {
+        val currText = binding.joinBtn.text
+        val joinEventText = binding.root.context.getText(R.string.join_event)
+        val unsubFromEvent = binding.root.context.getText(R.string.unsub_from_event)
+        if (currText == joinEventText) {
+            binding.joinBtn.text = unsubFromEvent
+        } else {
+            binding.joinBtn.text = joinEventText
+        }
+    }
+
+    fun updateSubscribeButton(subbed : Boolean) {
+        val joinEventText = binding.root.context.getText(R.string.join_event)
+        val unsubFromEvent = binding.root.context.getText(R.string.unsub_from_event)
+        binding.joinBtn.text = if (subbed) unsubFromEvent else joinEventText
+    }
+
+    companion object {
+        private val calendar = Calendar.getInstance()
+        private val dateFormat = DateFormat.getDateInstance()
+    }
+}

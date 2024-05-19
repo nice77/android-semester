@@ -84,4 +84,7 @@ dependencies {
 
     def pagingVersion = "3.2.1"
     implementation "androidx.paging:paging-runtime:$pagingVersion"
+
+    def mapsVersion = "4.6.1-lite"
+    implementation "com.yandex.android:maps.mobile:$mapsVersion"
 }

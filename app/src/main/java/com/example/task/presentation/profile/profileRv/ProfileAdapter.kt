@@ -12,7 +12,8 @@ import com.example.task.databinding.ItemUserCardBinding
 
 class ProfileAdapter(
     private val onRadioButtonChecked: (Int) -> Unit,
-    private val onEditButtonPressed: () -> Unit
+    private val onEditButtonPressed: () -> Unit,
+    private val onEventItemPressed: (Long) -> Unit
 ) : PagingDataAdapter<ProfileUIModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -34,7 +35,8 @@ class ProfileAdapter(
                 onRadioButtonChecked = onRadioButtonChecked
             )
             R.layout.item_event -> EventViewHolder(
-                binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onEventItemPressed = onEventItemPressed
             )
             else -> throw NoSuchElementException()
         }

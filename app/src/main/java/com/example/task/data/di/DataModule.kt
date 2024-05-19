@@ -9,6 +9,7 @@ import com.example.task.data.di.qualifiers.NonAuthRetrofitQualifier
 import com.example.task.data.di.qualifiers.RefreshTokenInterceptorQualifier
 import com.example.task.data.local.sharedpreferences.Keys
 import com.example.task.data.remote.datasource.AuthApi
+import com.example.task.data.remote.datasource.CommentApi
 import com.example.task.data.remote.datasource.EventApi
 import com.example.task.data.remote.datasource.StaticStrings
 import com.example.task.data.remote.datasource.UserApi
@@ -19,6 +20,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 
@@ -79,6 +81,14 @@ class DataModule {
         @AuthRetrofitQualifier retrofit: Retrofit
     ) : EventApi {
         return retrofit.create(EventApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentApi(
+        @AuthRetrofitQualifier retrofit: Retrofit
+    ) : CommentApi {
+        return retrofit.create(CommentApi::class.java)
     }
 
     @Provides

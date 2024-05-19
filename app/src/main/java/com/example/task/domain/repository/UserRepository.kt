@@ -26,4 +26,8 @@ interface UserRepository {
     suspend fun updateUser(userUpdateDomainModel: UserUpdateDomainModel)
 
     suspend fun updateUserImage(file : File) : String
+
+    suspend fun manageSubscriptionToEvent(eventId : Long)
+
+    suspend fun amISubscribed(eventId: Long) : Boolean
 }

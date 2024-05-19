@@ -86,4 +86,12 @@ class UserRepositoryImpl @Inject constructor(
         val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
         return userApi.updateUserImage(filePart)
     }
+
+    override suspend fun manageSubscriptionToEvent(eventId: Long) {
+        userApi.manageSubscriptionToEvent(eventId)
+    }
+
+    override suspend fun amISubscribed(eventId: Long): Boolean {
+        return userApi.amISubscribed(eventId)
+    }
 }

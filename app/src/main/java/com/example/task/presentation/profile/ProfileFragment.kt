@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentProfileBinding
+import com.example.task.presentation.event.EventFragment
 import com.example.task.presentation.profile.profileRv.ProfileAdapter
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
@@ -35,7 +36,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         binding.profileRv.adapter = ProfileAdapter(
             onRadioButtonChecked = ::onRadioButtonChecked,
-            onEditButtonPressed = ::onEditButtonPressed
+            onEditButtonPressed = ::onEditButtonPressed,
+            onEventItemPressed = ::onEventClicked
         )
         observeData()
     }
@@ -46,6 +48,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun onRadioButtonChecked(radioButtonId : Int) {
         viewModel.checkNewItem(checkedItemId = radioButtonId)
+    }
+
+    private fun onEventClicked(eventId : Long) {
+        val bundle = Bundle().apply {
+            putLong(EventFragment.CURRENT_EVENT_KEY, eventId)
+        }
+        findNavController().navigate(R.id.action_profileFragment_to_eventFragment, bundle)
     }
 
     private fun observeData() {
