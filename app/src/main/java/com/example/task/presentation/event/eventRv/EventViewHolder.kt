@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.task.BuildConfig
 import com.example.task.R
 import com.example.task.databinding.ItemCurrentEventBinding
+import com.example.task.presentation.event.imageRv.ImageViewPager
 import com.example.task.utils.loadCaching
 
 class EventViewHolder(
@@ -18,6 +19,7 @@ class EventViewHolder(
     private var currentAuthorName : String? = null
 
     init {
+
         binding.joinBtn.setOnClickListener {
             onEventSubscribed()
             updateSubState()
@@ -26,9 +28,9 @@ class EventViewHolder(
 
     fun onBind(item : EventUiModel.Event) {
         binding.run {
-            eventIv.loadCaching(BuildConfig.PATH + item.eventImages[0])
+//            eventIv.loadCaching(BuildConfig.PATH + item.eventImages[0])
+            imageVp.adapter = ImageViewPager(item.eventImages)
             titleTv.text = item.title
-            println("Item size: ${item.description.length}")
             subtitleTv.text = item.description.ifEmpty { binding.root.context.getString(R.string.no_description) }
             calendar.timeInMillis = item.date.time
             dateTv.text = dateFormat.format(calendar)

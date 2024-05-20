@@ -4,28 +4,20 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/event_cv"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/image_vp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="250dp"
         app:layout_constraintBottom_toTopOf="@id/title_tv"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="16dp">
-        <ImageView
-            android:id="@+id/event_iv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="250dp"
-            android:scaleType="centerCrop"
-            />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"/>
 
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/event_cv"
+        app:layout_constraintTop_toBottomOf="@id/image_vp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/subtitle_tv"
         android:layout_marginHorizontal="16dp"
