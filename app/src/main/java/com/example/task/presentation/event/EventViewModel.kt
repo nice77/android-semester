@@ -9,12 +9,11 @@ import androidx.paging.cachedIn
 import androidx.paging.insertHeaderItem
 import androidx.paging.map
 import com.example.task.data.repositories.paging.CommentPagingSource
-import com.example.task.domain.models.CommentDomainModel
 import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.UserDomainModel
 import com.example.task.domain.models.request.CommentRequestDomainModel
 import com.example.task.domain.usecases.AddCommentUseCase
-import com.example.task.domain.usecases.AmISubscribedUseCase
+import com.example.task.domain.usecases.AmISubscribedToEventUseCase
 import com.example.task.domain.usecases.GetEventUseCase
 import com.example.task.domain.usecases.GetUserUseCase
 import com.example.task.domain.usecases.ManageSubscriptionToEventUseCase
@@ -37,7 +36,7 @@ class EventViewModel @AssistedInject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val commentPagingSourceFactory: CommentPagingSource.Factory,
     private val manageSubscriptionToEventUseCase: ManageSubscriptionToEventUseCase,
-    private val amISubscribedUseCase: AmISubscribedUseCase,
+    private val amISubscribedToEventUseCase: AmISubscribedToEventUseCase,
     private val addCommentUseCase: AddCommentUseCase
 ) : ViewModel() {
 
@@ -132,7 +131,7 @@ class EventViewModel @AssistedInject constructor(
 
     fun amISubscribedToEvent() {
         viewModelScope.launch {
-            amISubscribedUseCase(eventId = eventId).onSuccess {
+            amISubscribedToEventUseCase(eventId = eventId).onSuccess {
                 _requestResultFlow.emit(
                     RequestResult(type = RequestResultTypeEnum.AM_I_SUBSCRIBED, result = it)
                 )

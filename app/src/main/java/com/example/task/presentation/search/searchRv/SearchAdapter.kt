@@ -13,7 +13,8 @@ import com.example.task.databinding.ItemSearchBarBinding
 class SearchAdapter(
     private val onTextUpdate: (String) -> Unit,
     private val onFilterButtonPressed: () -> Unit,
-    private val onEventItemPressed: (Long) -> Unit
+    private val onEventItemPressed: (Long) -> Unit,
+    private val onUserItemPressed: (Long) -> Unit
 ) : PagingDataAdapter<SearchUiModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
 
     private var searchBar : SearchBarViewHolder? = null
@@ -47,7 +48,8 @@ class SearchAdapter(
                 onEventItemPressed = onEventItemPressed
             )
             R.layout.item_horizontal_user -> UserViewHolder(
-                binding = ItemHorizontalUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                binding = ItemHorizontalUserBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onUserItemPressed = onUserItemPressed
             )
             else -> throw NoSuchElementException()
         }

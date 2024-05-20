@@ -14,7 +14,9 @@ import com.example.task.data.repositories.paging.UserCreatedEventPagingSource
 import com.example.task.data.repositories.paging.UserSubscribedEventPagingSource
 import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.models.UserDomainModel
+import com.example.task.domain.usecases.AmISubscribedToUserUseCase
 import com.example.task.domain.usecases.GetUserUseCase
+import com.example.task.domain.usecases.ManageSubscriptionToUserUseCase
 import com.example.task.presentation.profile.profileRv.ProfileUIModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -31,6 +33,8 @@ class ProfileViewModel @AssistedInject constructor(
     private val userCreatedEventPagingSourceFactory: UserCreatedEventPagingSource.Factory,
     private val userSubscribedEventPagingSourceFactory: UserSubscribedEventPagingSource.Factory,
     private val getUserUseCase: GetUserUseCase,
+    private val amISubscribedToUserUseCase: AmISubscribedToUserUseCase,
+    private val manageSubscriptionToUserUseCase: ManageSubscriptionToUserUseCase,
     @Assisted private val userId : Long?
 ) : ViewModel() {
 
@@ -39,6 +43,10 @@ class ProfileViewModel @AssistedInject constructor(
     private val _profileConfigFlow = MutableStateFlow(R.id.created_events_rb)
     val profileConfigFlow : StateFlow<Int>
         get() = _profileConfigFlow
+
+    private val _amISubscribedFlow = MutableStateFlow<Boolean?>(null)
+    val amISubscribedFlow : StateFlow<Boolean?>
+        get() = _amISubscribedFlow
 
     private var currentSource : PagingSource<Int, EventDomainModel>? = null
 
@@ -67,6 +75,10 @@ class ProfileViewModel @AssistedInject constructor(
                             currentUser = it
                         }
                     }
+                    var loggedUser : UserDomainModel? = null
+                    getUserUseCase(null).onSuccess {
+                        loggedUser = it
+                    }
                     currentUser?.let {
                         newPagingData = newPagingData.insertHeaderItem(item = ProfileUIModel.User(
                             id = it.id,
@@ -77,7 +89,7 @@ class ProfileViewModel @AssistedInject constructor(
                             userImage = it.userImage,
                             subscribersCount = it.subscribersCount,
                             authorsCount = it.authorsCount,
-                            isCurrentUser = userId == null
+                            isCurrentUser = userId == null || loggedUser?.id == currentUser?.id
                         ))
                     }
                     newPagingData
@@ -122,6 +134,24 @@ class ProfileViewModel @AssistedInject constructor(
     fun checkNewItem(checkedItemId : Int) {
         viewModelScope.launch {
             _profileConfigFlow.emit(checkedItemId)
+        }
+    }
+
+    fun amISubscribedToUser() {
+        viewModelScope.launch {
+            userId?.let {
+                amISubscribedToUserUseCase(userId = userId).onSuccess {
+                    _amISubscribedFlow.emit(it)
+                }
+            }
+        }
+    }
+
+    fun manageSubscriptionToUser() {
+        viewModelScope.launch {
+            userId?.let {
+                manageSubscriptionToUserUseCase(userId = userId)
+            }
         }
     }
 

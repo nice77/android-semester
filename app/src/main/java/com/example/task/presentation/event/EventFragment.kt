@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.paging.insertHeaderItem
 import androidx.paging.map
@@ -14,6 +15,7 @@ import com.example.task.R
 import com.example.task.databinding.FragmentEventBinding
 import com.example.task.presentation.event.eventRv.EventAdapter
 import com.example.task.presentation.event.eventRv.EventUiModel
+import com.example.task.presentation.profile.ProfileFragment
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
 import com.yandex.mapkit.MapKitFactory
@@ -33,7 +35,8 @@ class EventFragment : Fragment(R.layout.fragment_event) {
             isCurrentUser = ::isCurrentUser,
             onEventSubscribed = ::onEventSubscribed,
             amISubscribedToEvent = ::amISubscribedToEvent,
-            sendComment = ::sendComment
+            sendComment = ::sendComment,
+            onUserNameClicked = ::onUserNameClicked
         )
         observeData()
     }
@@ -56,6 +59,13 @@ class EventFragment : Fragment(R.layout.fragment_event) {
 
     private fun sendComment(text : String) {
         viewModel.sendComment(text = text)
+    }
+
+    private fun onUserNameClicked(userId: Long) {
+        val bundle = Bundle().apply {
+            putLong(ProfileFragment.USER_ID_KEY, userId)
+        }
+        findNavController().navigate(R.id.action_eventFragment_to_profileFragment, bundle)
     }
 
     private fun observeData() {

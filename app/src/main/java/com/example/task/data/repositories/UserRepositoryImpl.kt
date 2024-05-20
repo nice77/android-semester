@@ -91,7 +91,15 @@ class UserRepositoryImpl @Inject constructor(
         userApi.manageSubscriptionToEvent(eventId)
     }
 
-    override suspend fun amISubscribed(eventId: Long): Boolean {
-        return userApi.amISubscribed(eventId)
+    override suspend fun amISubscribedToEvent(eventId: Long): Boolean {
+        return userApi.amISubscribedToEvent(eventId)
+    }
+
+    override suspend fun manageSubscriptionToUser(userId: Long) {
+        userApi.manageSubscriptionToUser(userId = userId)
+    }
+
+    override suspend fun amISubscribedToUser(userId: Long): Boolean {
+        return userApi.amISubscribedToUser(userId = userId)
     }
 }

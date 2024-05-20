@@ -13,22 +13,26 @@ import com.example.task.utils.loadCaching
 
 class EventViewHolder(
     private val binding: ItemCurrentEventBinding,
-    private val onEventSubscribed: () -> Unit
+    private val onEventSubscribed: () -> Unit,
+    private val onUserNameClicked: (Long) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private var currentAuthorName : String? = null
+    private var currentAuthorId : Long? = null
 
     init {
-
         binding.joinBtn.setOnClickListener {
             onEventSubscribed()
             updateSubState()
         }
+        binding.authorNameTv.setOnClickListener {
+            currentAuthorId?.let(onUserNameClicked)
+        }
     }
 
     fun onBind(item : EventUiModel.Event) {
+        currentAuthorId = item.authorId
         binding.run {
-//            eventIv.loadCaching(BuildConfig.PATH + item.eventImages[0])
             imageVp.adapter = ImageViewPager(item.eventImages)
             titleTv.text = item.title
             subtitleTv.text = item.description.ifEmpty { binding.root.context.getString(R.string.no_description) }

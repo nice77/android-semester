@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_mainFragment_to_eventFragment"
             app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -19,6 +22,9 @@
         <action
             android:id="@+id/action_searchFragment_to_eventFragment"
             app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -43,5 +49,9 @@
     <fragment
         android:id="@+id/eventFragment"
         android:name="com.example.task.presentation.event.EventFragment"
-        android:label="EventFragment" />
+        android:label="EventFragment" >
+        <action
+            android:id="@+id/action_eventFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 </navigation>

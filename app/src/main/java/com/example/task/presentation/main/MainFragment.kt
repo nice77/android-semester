@@ -12,6 +12,7 @@ import com.example.task.R
 import com.example.task.databinding.FragmentMainBinding
 import com.example.task.presentation.event.EventFragment
 import com.example.task.presentation.main.mainRv.MainAdapter
+import com.example.task.presentation.profile.ProfileFragment
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -26,7 +27,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainRv.adapter = MainAdapter(viewModel, viewLifecycleOwner, ::onEventItemPressed)
+        binding.mainRv.adapter = MainAdapter(viewModel, viewLifecycleOwner, ::onEventItemPressed, ::onUserItemClicked)
         observeData()
     }
 
@@ -35,6 +36,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             putLong(EventFragment.CURRENT_EVENT_KEY, eventId)
         }
         findNavController().navigate(R.id.action_mainFragment_to_eventFragment, bundle)
+    }
+
+    private fun onUserItemClicked(userId : Long) {
+        val bundle = Bundle().apply {
+            putLong(ProfileFragment.USER_ID_KEY, userId)
+        }
+        findNavController().navigate(R.id.action_mainFragment_to_profileFragment, bundle)
     }
 
     private fun observeData() {

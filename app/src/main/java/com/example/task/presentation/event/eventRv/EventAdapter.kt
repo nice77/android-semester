@@ -15,7 +15,8 @@ class EventAdapter(
     private val isCurrentUser: (Long) -> Unit,
     private val onEventSubscribed: () -> Unit,
     private val amISubscribedToEvent: () -> Unit,
-    private val sendComment: (String) -> Unit
+    private val sendComment: (String) -> Unit,
+    private val onUserNameClicked: (Long) -> Unit
 ) : PagingDataAdapter<EventUiModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
 
     private var eventViewHolder : EventViewHolder? = null
@@ -42,7 +43,8 @@ class EventAdapter(
             R.layout.item_current_event -> {
                 eventViewHolder = EventViewHolder(
                     binding = ItemCurrentEventBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    onEventSubscribed = onEventSubscribed
+                    onEventSubscribed = onEventSubscribed,
+                    onUserNameClicked = onUserNameClicked
                 )
                 eventViewHolder!!
             }

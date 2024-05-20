@@ -40,4 +40,6 @@
     <string name="edit_event">Edit Event</string>
     <string name="no_description">No description provided</string>
     <string name="comment">Comment</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsub_from_user">Remove Subscription</string>
 </resources>

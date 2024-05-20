@@ -29,5 +29,9 @@ interface UserRepository {
 
     suspend fun manageSubscriptionToEvent(eventId : Long)
 
-    suspend fun amISubscribed(eventId: Long) : Boolean
+    suspend fun amISubscribedToEvent(eventId: Long) : Boolean
+
+    suspend fun manageSubscriptionToUser(userId : Long)
+
+    suspend fun amISubscribedToUser(userId : Long) : Boolean
 }

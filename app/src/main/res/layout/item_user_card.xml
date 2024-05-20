@@ -2,13 +2,13 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/UserCardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/edit_iv"
@@ -29,7 +29,8 @@
             app:layout_constraintBottom_toTopOf="@id/avatar_cv"
             android:text="@string/profile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/avatar_cv"
@@ -39,6 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/user_gmail_tv"
+            android:layout_margin="8dp"
             app:cardCornerRadius="96dp">
             <ImageView
                 android:id="@+id/avatar_iv"
@@ -55,7 +57,8 @@
             app:layout_constraintTop_toBottomOf="@id/avatar_cv"
             app:layout_constraintBottom_toTopOf="@id/user_name_tv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"/>
 
         <TextView
             android:id="@+id/user_name_tv"
@@ -63,9 +66,20 @@
             android:layout_height="wrap_content"
             style="@style/Text.Medium.Small"
             app:layout_constraintTop_toBottomOf="@id/user_gmail_tv"
-            app:layout_constraintBottom_toTopOf="@id/upper_gl"
+            app:layout_constraintBottom_toTopOf="@id/subsribe_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"/>
+
+        <Button
+            android:id="@+id/subsribe_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/user_name_tv"
+            app:layout_constraintBottom_toTopOf="@id/upper_gl"
+            style="@style/Button.PaddingSmall"
+            android:layout_margin="8dp"
+            android:text="@string/subscribe"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/upper_gl"
@@ -82,7 +96,8 @@
             app:layout_constraintTop_toBottomOf="@id/upper_gl"
             app:layout_constraintBottom_toTopOf="@id/authors_tv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/followers_count_tv"/>
+            app:layout_constraintEnd_toStartOf="@id/followers_count_tv"
+            android:layout_margin="8dp"/>
 
         <TextView
             android:id="@+id/followers_count_tv"
@@ -92,7 +107,8 @@
             app:layout_constraintBottom_toTopOf="@id/followers_tv"
             app:layout_constraintTop_toBottomOf="@id/upper_gl"
             app:layout_constraintStart_toEndOf="@id/authors_tv"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"/>
 
         <TextView
             android:id="@+id/authors_tv"
@@ -103,7 +119,8 @@
             app:layout_constraintTop_toBottomOf="@id/authors_count_tv"
             app:layout_constraintBottom_toTopOf="@id/bottom_gl"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/followers_tv"/>
+            app:layout_constraintEnd_toStartOf="@id/followers_tv"
+            android:layout_margin="8dp"/>
 
         <TextView
             android:id="@+id/followers_tv"
@@ -114,7 +131,8 @@
             app:layout_constraintTop_toBottomOf="@id/followers_count_tv"
             app:layout_constraintBottom_toTopOf="@id/bottom_gl"
             app:layout_constraintStart_toEndOf="@id/authors_tv"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_gl"
@@ -122,15 +140,17 @@
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.85"
-            />
+            app:layout_constraintBottom_toTopOf="@id/create_new_event_btn"/>
 
         <TextView
             android:id="@+id/create_new_event_btn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_new_event"
             style="@style/Text.Bold.Small"
-            app:layout_constraintTop_toTopOf="@id/bottom_gl"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottom_gl"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

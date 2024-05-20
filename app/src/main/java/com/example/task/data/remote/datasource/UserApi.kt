@@ -71,5 +71,13 @@ interface UserApi {
 
     @GET("users/event")
     @Headers(StaticStrings.AUTH_HEADER)
-    suspend fun amISubscribed(@Query("event_id") eventId : Long) : Boolean
+    suspend fun amISubscribedToEvent(@Query("event_id") eventId : Long) : Boolean
+
+    @POST("users/{id}/subscribe")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun manageSubscriptionToUser(@Path("id") userId : Long)
+
+    @GET("users/{id}/subscription")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun amISubscribedToUser(@Path("id") userId: Long) : Boolean
 }

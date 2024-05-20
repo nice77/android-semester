@@ -9,16 +9,29 @@ import com.example.task.R
 import com.example.task.databinding.ItemEventBinding
 import com.example.task.databinding.ItemFilterButtonsBinding
 import com.example.task.databinding.ItemUserCardBinding
+import com.example.task.domain.usecases.ManageSubscriptionToUserUseCase
 
 class ProfileAdapter(
     private val onRadioButtonChecked: (Int) -> Unit,
     private val onEditButtonPressed: () -> Unit,
-    private val onEventItemPressed: (Long) -> Unit
+    private val onEventItemPressed: (Long) -> Unit,
+    private val amISubscribedToUser: () -> Unit,
+    private val manageSubscriptionToUser: () -> Unit
 ) : PagingDataAdapter<ProfileUIModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
+
+    private var userViewHolder : UserViewHolder? = null
+    private var isRequestMade = false
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (position) {
-            0 -> (holder as UserViewHolder).onBind(getItem(position) as ProfileUIModel.User)
+            0 -> {
+                val item = getItem(position) as ProfileUIModel.User
+                (holder as UserViewHolder).onBind(item)
+                if (!isRequestMade) {
+                    amISubscribedToUser()
+                    isRequestMade = true
+                }
+            }
             1 -> (holder as ButtonsViewHolder).onBind(getItem(position) as ProfileUIModel.Buttons)
             else -> (holder as EventViewHolder).onBind(getItem(position) as ProfileUIModel.Event)
         }
@@ -26,10 +39,14 @@ class ProfileAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_user_card -> UserViewHolder(
-                binding = ItemUserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onEditButtonPressed = onEditButtonPressed
-            )
+            R.layout.item_user_card -> {
+                userViewHolder = UserViewHolder(
+                    binding = ItemUserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                    onEditButtonPressed = onEditButtonPressed,
+                    manageSubscriptionToUser = manageSubscriptionToUser
+                )
+                userViewHolder!!
+            }
             R.layout.item_filter_buttons -> ButtonsViewHolder(
                 binding = ItemFilterButtonsBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 onRadioButtonChecked = onRadioButtonChecked
@@ -48,6 +65,10 @@ class ProfileAdapter(
             1 -> R.layout.item_filter_buttons
             else -> R.layout.item_event
         }
+    }
+
+    fun updateSubscriptionButton(subState : Boolean) {
+        userViewHolder?.updateSubscriptionButton(subState)
     }
 
     companion object {

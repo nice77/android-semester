@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.task.databinding.ItemUserBinding
 import com.example.task.domain.models.UserDomainModel
 
-class UsersAdapter : PagingDataAdapter<UserDomainModel, UserViewHolder>(ITEM_DIFF) {
+class UsersAdapter(
+    private val onUserItemClicked: (Long) -> Unit
+) : PagingDataAdapter<UserDomainModel, UserViewHolder>(ITEM_DIFF) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(
-            binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onUserItemClicked = onUserItemClicked
         )
     }
 
