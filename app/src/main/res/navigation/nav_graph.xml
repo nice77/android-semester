@@ -30,10 +30,10 @@
             app:destination="@id/holderFragment" />
     </fragment>
     <fragment
-        android:id="@+id/welcomeFragment"
-        android:name="com.example.task.presentation.welcome.WelcomeFragment"
+        android:id="@+id/selectFragment"
+        android:name="com.example.task.presentation.select.SelectFragment"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" >
+        tools:layout="@layout/fragment_select" >
         <action
             android:id="@+id/action_welcomeFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -45,4 +45,22 @@
         android:id="@+id/holderFragment"
         android:name="com.example.task.presentation.holder.HolderFragment"
         android:label="HolderFragment" />
+    <fragment
+        android:id="@+id/themeChooseFragment"
+        android:name="com.example.task.presentation.themechoose.ThemeChooseFragment"
+        android:label="fragment_theme_choose"
+        tools:layout="@layout/fragment_theme_choose" >
+        <action
+            android:id="@+id/action_themeChooseFragment_to_selectFragment"
+            app:destination="@id/selectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.task.presentation.welcome.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment2_to_themeChooseFragment"
+            app:destination="@id/themeChooseFragment" />
+    </fragment>
 </navigation>

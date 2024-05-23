@@ -10,16 +10,13 @@ import com.example.task.databinding.FragmentWelcomeBinding
 
 class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
-    private val binding : FragmentWelcomeBinding by viewBinding(FragmentWelcomeBinding::bind)
+    private val binding by viewBinding(FragmentWelcomeBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.run {
-            binding.signInBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_welcomeFragment_to_authFragment)
-            }
-            binding.registerBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
-            }
+        super.onViewCreated(view, savedInstanceState)
+        binding.submitBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_welcomeFragment2_to_themeChooseFragment)
         }
     }
+
 }

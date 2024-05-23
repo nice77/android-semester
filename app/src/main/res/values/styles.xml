@@ -165,4 +165,12 @@
         <item name="android:textColor">@drawable/filter_radio_button_text_selector_bg</item>
         <item name="android:textAppearance">@style/Text.Medium.Small</item>
     </style>
+
+    <style name="CustomRadioButton.ThemePageRadioButton">
+        <item name="android:textColor">@drawable/theme_radiobutton_text_selector_bg</item>
+        <item name="android:textAppearance">@style/Text.Medium.Small</item>
+        <item name="android:button">"@null"</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
 </resources>
