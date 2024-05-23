@@ -40,19 +40,28 @@ class EventViewModel @AssistedInject constructor(
     private val addCommentUseCase: AddCommentUseCase
 ) : ViewModel() {
 
-    private var currentEvent : EventDomainModel? = null
+    private var _currentEvent : EventDomainModel? = null
+    val currentEvent : EventDomainModel?
+        get() = _currentEvent
 
     private val _userFlow = MutableStateFlow<UserDomainModel?>(null)
     val userFlow : StateFlow<UserDomainModel?>
         get() = _userFlow
 
-    private val _requestResultFlow = MutableStateFlow<RequestResult?>(null)
-    val requestResultFlow : StateFlow<RequestResult?>
-        get() = _requestResultFlow
+    private val _requestCurrentUserFlow = MutableStateFlow<Boolean?>(null)
+    val requestCurrentUserFlow : StateFlow<Boolean?>
+        get() = _requestCurrentUserFlow
+
+    private val _requestSubscriptionFlow = MutableStateFlow<Boolean?>(null)
+    val requestSubscriptionFlow : StateFlow<Boolean?>
+        get() = _requestSubscriptionFlow
+
 
     private val _commentFlow = MutableStateFlow<EventUiModel.Comment?>(null)
     val commentFlow : StateFlow<EventUiModel.Comment?>
         get() = _commentFlow
+
+    private var currentPagingSource : CommentPagingSource? = null
 
     val eventPageFlow : StateFlow<PagingData<EventUiModel>> = Pager(
         PagingConfig(
@@ -61,7 +70,9 @@ class EventViewModel @AssistedInject constructor(
             prefetchDistance = 1
         )
     ) {
-        commentPagingSourceFactory.create(eventId)
+        val toReturn = commentPagingSourceFactory.create(eventId)
+        currentPagingSource = toReturn
+        toReturn
     }.flow
         .map { pagingData ->
             pagingData.map { commentDomainModel ->
@@ -78,14 +89,14 @@ class EventViewModel @AssistedInject constructor(
             } as PagingData<EventUiModel>
         }
         .map { pagingData ->
-            var newPagingData : PagingData<EventUiModel> = pagingData
-            if (currentEvent == null) {
+            var newPagingData : PagingData<EventUiModel>
+            if (_currentEvent == null) {
                 getEventUseCase(eventId).onSuccess { eventDomainModel ->
-                    currentEvent = eventDomainModel
+                    _currentEvent = eventDomainModel
                 }
             }
             newPagingData = pagingData.insertHeaderItem(item = EventUiModel.CommentInputField)
-            currentEvent?.run {
+            _currentEvent?.run {
                 newPagingData = newPagingData.insertHeaderItem(item =
                     EventUiModel.Event(
                         id = id,
@@ -113,12 +124,15 @@ class EventViewModel @AssistedInject constructor(
         }
     }
 
+    fun reloadEventData() {
+        _currentEvent = null
+        currentPagingSource?.invalidate()
+    }
+
     fun getIsCurrentUser(userId: Long) {
         viewModelScope.launch {
             getUserUseCase(null).onSuccess {
-                _requestResultFlow.emit(
-                    RequestResult(type = RequestResultTypeEnum.IS_CURRENT_USER, result = it.id == userId)
-                )
+                _requestCurrentUserFlow.emit(it.id == userId)
             }
         }
     }
@@ -132,9 +146,7 @@ class EventViewModel @AssistedInject constructor(
     fun amISubscribedToEvent() {
         viewModelScope.launch {
             amISubscribedToEventUseCase(eventId = eventId).onSuccess {
-                _requestResultFlow.emit(
-                    RequestResult(type = RequestResultTypeEnum.AM_I_SUBSCRIBED, result = it)
-                )
+                _requestSubscriptionFlow.emit(it)
             }
         }
     }

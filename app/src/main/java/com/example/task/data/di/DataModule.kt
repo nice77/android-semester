@@ -19,6 +19,7 @@ import dagger.Provides
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -31,9 +32,12 @@ class DataModule {
         @AccessTokenInterceptorQualifier accessTokenInterceptor: Interceptor,
         @RefreshTokenInterceptorQualifier refreshTokenInterceptorQualifier: Interceptor
     ) : OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
             .addInterceptor(accessTokenInterceptor)
             .addInterceptor(refreshTokenInterceptorQualifier)
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 

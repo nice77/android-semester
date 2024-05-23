@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.task.data.di.DataModule
 import com.example.task.data.di.DataModuleBinder
 import com.example.task.presentation.authentication.AuthViewModel
+import com.example.task.presentation.editevent.EditEventViewModel
 import com.example.task.presentation.editprofile.EditProfileViewModel
 import com.example.task.presentation.event.EventViewModel
 import com.example.task.presentation.main.MainViewModel
@@ -43,4 +44,6 @@ interface AppComponent {
     fun editProfileViewModel() : EditProfileViewModel.Factory
 
     fun eventViewModel() : EventViewModel.Factory
+
+    fun editEventViewModel() : EditEventViewModel.Factory
 }

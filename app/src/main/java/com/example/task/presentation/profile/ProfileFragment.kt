@@ -39,9 +39,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             onEditButtonPressed = ::onEditButtonPressed,
             onEventItemPressed = ::onEventClicked,
             amISubscribedToUser = ::amISubscribedToUser,
-            manageSubscriptionToUser = ::manageSubscriptionToUser
+            manageSubscriptionToUser = ::manageSubscriptionToUser,
+            onCreateNewClicked = ::onCreateNewClicked
         )
         observeData()
+    }
+
+    private fun onCreateNewClicked() {
+        findNavController().navigate(R.id.action_profileFragment_to_editEventFragment)
     }
 
     private fun onEditButtonPressed() {

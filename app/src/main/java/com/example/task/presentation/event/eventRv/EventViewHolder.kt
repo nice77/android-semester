@@ -14,11 +14,16 @@ import com.example.task.utils.loadCaching
 class EventViewHolder(
     private val binding: ItemCurrentEventBinding,
     private val onEventSubscribed: () -> Unit,
-    private val onUserNameClicked: (Long) -> Unit
+    private val onUserNameClicked: (Long) -> Unit,
+    private val onEditBtnClicked: () -> Unit,
+    private val onImageMapClicked: (Double, Double) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private var currentAuthorName : String? = null
     private var currentAuthorId : Long? = null
+
+    private var latitude : Double? = null
+    private var longitude : Double? = null
 
     init {
         binding.joinBtn.setOnClickListener {
@@ -28,10 +33,20 @@ class EventViewHolder(
         binding.authorNameTv.setOnClickListener {
             currentAuthorId?.let(onUserNameClicked)
         }
+        binding.editBtn.setOnClickListener {
+            onEditBtnClicked()
+        }
+        binding.mapIv.setOnClickListener {
+            if (latitude != null && longitude != null) {
+                onImageMapClicked(latitude!!, longitude!!)
+            }
+        }
     }
 
     fun onBind(item : EventUiModel.Event) {
         currentAuthorId = item.authorId
+        latitude = item.latitude
+        longitude = item.longitude
         binding.run {
             imageVp.adapter = ImageViewPager(item.eventImages)
             titleTv.text = item.title
@@ -43,8 +58,8 @@ class EventViewHolder(
             var height = 270 * (root.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
             width = if (width > 650) 650 else width
             height = if (height > 450) 450 else height
-            val pointInfo = "${item.latitude},${item.longitude},org"
-            mapIv.loadCaching("${BuildConfig.STATIC_MAP_URI}apikey=${BuildConfig.STATIC_MAP_KEY}&ll=${item.latitude},${item.longitude}&z=16&size=$width,$height&pt=$pointInfo")
+            val pointInfo = "${item.longitude},${item.latitude},org"
+            mapIv.loadCaching("${BuildConfig.STATIC_MAP_URI}apikey=${BuildConfig.STATIC_MAP_KEY}&ll=${item.longitude},${item.latitude}&z=16&size=$width,$height&pt=$pointInfo")
         }
     }
 
@@ -56,8 +71,8 @@ class EventViewHolder(
         binding.authorNameTv.text = text
     }
 
-    fun showEditButton() {
-        binding.editBtn.isVisible = true
+    fun showEditButton(result: Boolean) {
+        binding.editBtn.isVisible = result
     }
 
     private fun updateSubState() {

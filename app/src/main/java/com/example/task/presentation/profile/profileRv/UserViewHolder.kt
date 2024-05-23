@@ -10,7 +10,8 @@ import com.example.task.utils.loadCaching
 class UserViewHolder(
     private val binding : ItemUserCardBinding,
     private val onEditButtonPressed: () -> Unit,
-    private val manageSubscriptionToUser: () -> Unit
+    private val manageSubscriptionToUser: () -> Unit,
+    private val onCreateNewClicked: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private var subState = false
@@ -35,6 +36,9 @@ class UserViewHolder(
             editIv.isVisible = uiModel.isCurrentUser
             createNewEventBtn.isVisible = uiModel.isCurrentUser
             subsribeBtn.isVisible = !uiModel.isCurrentUser
+            createNewEventBtn.setOnClickListener {
+                onCreateNewClicked()
+            }
         }
     }
 

@@ -8,17 +8,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
-import androidx.paging.insertHeaderItem
-import androidx.paging.map
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentEventBinding
+import com.example.task.presentation.editevent.EditEventFragment
 import com.example.task.presentation.event.eventRv.EventAdapter
-import com.example.task.presentation.event.eventRv.EventUiModel
+import com.example.task.presentation.map.MapFragment
 import com.example.task.presentation.profile.ProfileFragment
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
-import com.yandex.mapkit.MapKitFactory
 import kotlinx.coroutines.launch
 
 class EventFragment : Fragment(R.layout.fragment_event) {
@@ -36,9 +34,24 @@ class EventFragment : Fragment(R.layout.fragment_event) {
             onEventSubscribed = ::onEventSubscribed,
             amISubscribedToEvent = ::amISubscribedToEvent,
             sendComment = ::sendComment,
-            onUserNameClicked = ::onUserNameClicked
+            onUserNameClicked = ::onUserNameClicked,
+            onEditBtnClicked = ::onEditBtnClicked,
+            onImageMapClicked = ::onImageMapClicked
         )
         observeData()
+        findNavController().currentBackStackEntry?.savedStateHandle?.get<Bundle>(EditEventFragment.IS_MODIFIED_KEY)?.let {
+            viewModel.reloadEventData()
+            findNavController().currentBackStackEntry?.savedStateHandle?.set(EditEventFragment.IS_MODIFIED_KEY, null)
+        }
+    }
+
+    private fun onImageMapClicked(latitude : Double, longitude : Double) {
+        val bundle = Bundle().apply {
+            putDouble(MapFragment.LATITUDE_KEY, latitude)
+            putDouble(MapFragment.LONGITUDE_KEY, longitude)
+            putBoolean(MapFragment.IS_EDITABLE_KEY, false)
+        }
+        findNavController().navigate(R.id.action_eventFragment_to_mapFragment, bundle)
     }
 
     private fun getUser(userId : Long) {
@@ -68,6 +81,15 @@ class EventFragment : Fragment(R.layout.fragment_event) {
         findNavController().navigate(R.id.action_eventFragment_to_profileFragment, bundle)
     }
 
+    private fun onEditBtnClicked() {
+        val bundle = Bundle().apply {
+            arguments?.let {
+                putLong(CURRENT_EVENT_KEY, it.getLong(CURRENT_EVENT_KEY))
+            }
+        }
+        findNavController().navigate(R.id.action_eventFragment_to_editEventFragment, bundle)
+    }
+
     private fun observeData() {
         lifecycleScope.launch {
             repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -78,19 +100,17 @@ class EventFragment : Fragment(R.layout.fragment_event) {
                 }
                 launch {
                     viewModel.userFlow.collect {
-                        it?.let {
-                            (binding.eventRv.adapter as EventAdapter).updateUserName(it.name)
-                        }
+                        it?.name?.let((binding.eventRv.adapter as EventAdapter)::updateUserName)
                     }
                 }
                 launch {
-                    viewModel.requestResultFlow.collect {
-                        it?.let {
-                            when (it.type) {
-                                RequestResultTypeEnum.IS_CURRENT_USER -> (binding.eventRv.adapter as EventAdapter).showEditButton()
-                                RequestResultTypeEnum.AM_I_SUBSCRIBED -> (binding.eventRv.adapter as EventAdapter).updateSubscribeButton(subbed = it.result)
-                            }
-                        }
+                    viewModel.requestCurrentUserFlow.collect { result ->
+                        result?.let((binding.eventRv.adapter as EventAdapter)::showEditButton)
+                    }
+                }
+                launch {
+                    viewModel.requestSubscriptionFlow.collect { result ->
+                        result?.let((binding.eventRv.adapter as EventAdapter)::updateSubscribeButton)
                     }
                 }
                 launch {

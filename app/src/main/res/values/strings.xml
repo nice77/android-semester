@@ -42,4 +42,12 @@
     <string name="comment">Comment</string>
     <string name="subscribe">Subscribe</string>
     <string name="unsub_from_user">Remove Subscription</string>
+    <string name="event_title">Event Title</string>
+    <string name="event_description">Event Description</string>
+    <string name="pick_a_place">Pick A Place</string>
+    <string name="pick_a_date">Pick A Date</string>
+    <string name="pick_an_images">Pick An Images</string>
+    <string name="add_image">Add image</string>
+    <string name="undefined_name">Name Is Undefined</string>
+    <string name="undefined_description">Description Is Undefined</string>
 </resources>

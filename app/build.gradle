@@ -87,4 +87,6 @@ dependencies {
 
     def mapsVersion = "4.6.1-lite"
     implementation "com.yandex.android:maps.mobile:$mapsVersion"
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 }

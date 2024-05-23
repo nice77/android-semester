@@ -16,7 +16,8 @@ class ProfileAdapter(
     private val onEditButtonPressed: () -> Unit,
     private val onEventItemPressed: (Long) -> Unit,
     private val amISubscribedToUser: () -> Unit,
-    private val manageSubscriptionToUser: () -> Unit
+    private val manageSubscriptionToUser: () -> Unit,
+    private val onCreateNewClicked: () -> Unit
 ) : PagingDataAdapter<ProfileUIModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
 
     private var userViewHolder : UserViewHolder? = null
@@ -43,7 +44,8 @@ class ProfileAdapter(
                 userViewHolder = UserViewHolder(
                     binding = ItemUserCardBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                     onEditButtonPressed = onEditButtonPressed,
-                    manageSubscriptionToUser = manageSubscriptionToUser
+                    manageSubscriptionToUser = manageSubscriptionToUser,
+                    onCreateNewClicked = onCreateNewClicked
                 )
                 userViewHolder!!
             }
