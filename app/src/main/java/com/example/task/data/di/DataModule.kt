@@ -1,5 +1,6 @@
 package com.example.task.data.di
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.task.BuildConfig
@@ -21,31 +22,82 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import javax.inject.Singleton
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 @Module
 class DataModule {
 
     @Provides
+    fun provideUnsafeOkClientBuilder(): OkHttpClient.Builder {
+        val okHttpClient = OkHttpClient.Builder()
+        try {
+            val trustAllCerts: Array<TrustManager> = arrayOf(@SuppressLint("CustomX509TrustManager")
+            object : X509TrustManager {
+
+                @SuppressLint("TrustAllX509TrustManager")
+                override fun checkClientTrusted(
+                    chain: Array<out X509Certificate>?,
+                    authType: String?
+                ) {
+                }
+
+                @SuppressLint("TrustAllX509TrustManager")
+                override fun checkServerTrusted(
+                    chain: Array<out X509Certificate>?,
+                    authType: String?
+                ) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            })
+
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, SecureRandom())
+
+            val sslSocketFactory = sslContext.socketFactory
+            if (trustAllCerts.isNotEmpty() && trustAllCerts.first() is X509TrustManager) {
+                okHttpClient.sslSocketFactory(
+                    sslSocketFactory,
+                    trustAllCerts.first() as X509TrustManager
+                )
+                okHttpClient.hostnameVerifier { _, _ -> true }
+            }
+
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            okHttpClient.addInterceptor(loggingInterceptor)
+            return okHttpClient
+        } catch (e: Exception) {
+            return okHttpClient
+        }
+    }
+
+    @Provides
     fun provideOkHttpClient(
         @AccessTokenInterceptorQualifier accessTokenInterceptor: Interceptor,
-        @RefreshTokenInterceptorQualifier refreshTokenInterceptorQualifier: Interceptor
+        @RefreshTokenInterceptorQualifier refreshTokenInterceptorQualifier: Interceptor,
+        builder: OkHttpClient.Builder
     ) : OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        return OkHttpClient.Builder()
+        return builder
             .addInterceptor(accessTokenInterceptor)
             .addInterceptor(refreshTokenInterceptorQualifier)
-            .addInterceptor(loggingInterceptor)
             .build()
     }
 
     @Provides
     @Singleton
     @NonAuthRetrofitQualifier
-    fun provideNonAuthRetrofit() : Retrofit {
+    fun provideNonAuthRetrofit(
+        builder : OkHttpClient.Builder
+    ) : Retrofit {
         return Retrofit.Builder()
+            .client(builder.build())
             .baseUrl(BuildConfig.PATH)
             .addConverterFactory(Json.asConverterFactory(StaticStrings.CONTENT_TYPE))
             .build()

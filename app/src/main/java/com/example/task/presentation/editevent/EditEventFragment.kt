@@ -45,9 +45,7 @@ class EditEventFragment : Fragment(R.layout.fragment_edit_event) {
             findNavController().navigate(R.id.action_editEventFragment_to_mapFragment, bundle)
         }
         binding.imagesLl.setOnClickListener {
-            images?.let { images ->
-                EventImagesBottomSheetFragment.getInstance(images).show(parentFragmentManager, TAG)
-            }
+            EventImagesBottomSheetFragment.getInstance(images ?: listOf()).show(parentFragmentManager, TAG)
         }
         binding.dateLl.setOnClickListener {
             val calendar = Calendar.getInstance()
