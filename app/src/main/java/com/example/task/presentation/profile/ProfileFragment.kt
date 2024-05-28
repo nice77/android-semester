@@ -43,7 +43,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             onRadioButtonChecked = ::onRadioButtonChecked,
             onEditButtonPressed = ::onEditButtonPressed,
             onEventItemPressed = ::onEventClicked,
-            amISubscribedToUser = ::amISubscribedToUser,
             manageSubscriptionToUser = ::manageSubscriptionToUser,
             onCreateNewClicked = ::onCreateNewClicked
         )
@@ -70,10 +69,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         findNavController().navigate(R.id.action_profileFragment_to_eventFragment, bundle)
     }
 
-    private fun amISubscribedToUser() {
-        viewModel.amISubscribedToUser()
-    }
-
     private fun manageSubscriptionToUser() {
         viewModel.manageSubscriptionToUser()
         viewModel.reloadProfileData()
@@ -86,13 +81,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     viewModel.eventList.collect {
                         (binding.profileRv.adapter as ProfileAdapter).submitData(it)
                         binding.root.isRefreshing = false
-                    }
-                }
-                launch {
-                    viewModel.amISubscribedFlow.collect {
-                        it?.let { subState ->
-                            (binding.profileRv.adapter as ProfileAdapter).updateSubscriptionButton(subState)
-                        }
                     }
                 }
             }

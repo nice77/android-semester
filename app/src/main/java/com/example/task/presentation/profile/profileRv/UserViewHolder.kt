@@ -14,15 +14,12 @@ class UserViewHolder(
     private val onCreateNewClicked: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private var subState = false
-
     init {
         binding.editIv.setOnClickListener {
             onEditButtonPressed()
         }
         binding.subsribeBtn.setOnClickListener {
             manageSubscriptionToUser()
-            updateSubscriptionButton(!subState)
         }
     }
 
@@ -39,15 +36,13 @@ class UserViewHolder(
             createNewEventBtn.setOnClickListener {
                 onCreateNewClicked()
             }
+
+            uiModel.isSubscribed?.let {
+                val subscribedText = binding.root.context.getText(R.string.subscribe)
+                val removeText = binding.root.context.getText(R.string.unsub_from_user)
+                binding.subsribeBtn.text = if (it) removeText else subscribedText
+            }
         }
     }
-
-    fun updateSubscriptionButton(subState : Boolean) {
-        this.subState = subState
-        val subscribedText = binding.root.context.getText(R.string.subscribe)
-        val removeText = binding.root.context.getText(R.string.unsub_from_user)
-        binding.subsribeBtn.text = if (subState) removeText else subscribedText
-    }
-
 
 }

@@ -44,10 +44,6 @@ class ProfileViewModel @AssistedInject constructor(
     val profileConfigFlow : StateFlow<Int>
         get() = _profileConfigFlow
 
-    private val _amISubscribedFlow = MutableStateFlow<Boolean?>(null)
-    val amISubscribedFlow : StateFlow<Boolean?>
-        get() = _amISubscribedFlow
-
     private var currentSource : PagingSource<Int, EventDomainModel>? = null
 
     val eventList : StateFlow<PagingData<ProfileUIModel>> = _profileConfigFlow
@@ -79,7 +75,13 @@ class ProfileViewModel @AssistedInject constructor(
                     getUserUseCase(null).onSuccess {
                         loggedUser = it
                     }
+                    var isSubscribed : Boolean? = null
                     currentUser?.let {
+                        userId?.let {
+                            amISubscribedToUserUseCase(it).onSuccess {
+                                isSubscribed = it
+                            }
+                        }
                         newPagingData = newPagingData.insertHeaderItem(item = ProfileUIModel.User(
                             id = it.id,
                             name = it.name,
@@ -89,7 +91,8 @@ class ProfileViewModel @AssistedInject constructor(
                             userImage = it.userImage,
                             subscribersCount = it.subscribersCount,
                             authorsCount = it.authorsCount,
-                            isCurrentUser = userId == null || loggedUser?.id == currentUser?.id
+                            isCurrentUser = userId == null || loggedUser?.id == currentUser?.id,
+                            isSubscribed = isSubscribed
                         ))
                     }
                     newPagingData
@@ -134,16 +137,6 @@ class ProfileViewModel @AssistedInject constructor(
     fun checkNewItem(checkedItemId : Int) {
         viewModelScope.launch {
             _profileConfigFlow.emit(checkedItemId)
-        }
-    }
-
-    fun amISubscribedToUser() {
-        viewModelScope.launch {
-            userId?.let {
-                amISubscribedToUserUseCase(userId = userId).onSuccess {
-                    _amISubscribedFlow.emit(it)
-                }
-            }
         }
     }
 
