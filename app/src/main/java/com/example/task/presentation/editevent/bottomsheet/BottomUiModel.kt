@@ -5,7 +5,8 @@ sealed interface BottomUiModel {
     data object Button : BottomUiModel
 
     data class Image(
-        val path : String
+        val path : String,
+        val isUri : Boolean
     ) : BottomUiModel
 
 }

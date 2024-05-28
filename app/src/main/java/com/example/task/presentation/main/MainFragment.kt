@@ -28,6 +28,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainRv.adapter = MainAdapter(viewModel, viewLifecycleOwner, ::onEventItemPressed, ::onUserItemClicked)
+        binding.root.setOnRefreshListener {
+            viewModel.reloadData()
+        }
         observeData()
     }
 
@@ -50,6 +53,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
                 viewModel.eventsFlow.collectLatest {
                     (binding.mainRv.adapter as MainAdapter).submitData(it)
+                    binding.root.isRefreshing = false
                 }
             }
         }

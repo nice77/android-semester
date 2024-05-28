@@ -19,9 +19,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class MainViewModel @AssistedInject constructor(
-    private val eventPagingSource: EventPagingSource,
-    private val userPagingSource: UserPagingSource
+    private val eventPagingSourceFactory: EventPagingSource.Factory,
+    private val userPagingSourceFactory: UserPagingSource.Factory
 ) : ViewModel() {
+
+    var eventPagingSource : EventPagingSource? = null
+    var userPagingSource : UserPagingSource? = null
 
     val eventsFlow = Pager(
         PagingConfig(
@@ -30,7 +33,8 @@ class MainViewModel @AssistedInject constructor(
             prefetchDistance = 1
         )
     ) {
-        eventPagingSource
+        eventPagingSource = eventPagingSourceFactory.create()
+        eventPagingSource!!
     }.flow
         .map { pagingData ->
             pagingData.map {
@@ -56,10 +60,16 @@ class MainViewModel @AssistedInject constructor(
             prefetchDistance = 1
         )
     ) {
-        userPagingSource
+        userPagingSource = userPagingSourceFactory.create()
+        userPagingSource!!
     }.flow
         .cachedIn(viewModelScope)
         .stateIn(scope = viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+    fun reloadData() {
+        userPagingSource?.invalidate()
+        eventPagingSource?.invalidate()
+    }
 
     @AssistedFactory
     interface Factory {

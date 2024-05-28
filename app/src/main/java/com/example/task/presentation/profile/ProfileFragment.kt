@@ -7,6 +7,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadStates
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentProfileBinding
@@ -33,7 +36,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             viewModel.reloadProfileData()
             findNavController().currentBackStackEntry?.savedStateHandle?.set(IS_MODIFIED_KEY, null)
         }
-
+        binding.root.setOnRefreshListener {
+            viewModel.reloadProfileData()
+        }
         binding.profileRv.adapter = ProfileAdapter(
             onRadioButtonChecked = ::onRadioButtonChecked,
             onEditButtonPressed = ::onEditButtonPressed,
@@ -42,6 +47,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             manageSubscriptionToUser = ::manageSubscriptionToUser,
             onCreateNewClicked = ::onCreateNewClicked
         )
+        binding.profileRv.overScrollMode
         observeData()
     }
 
@@ -70,6 +76,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun manageSubscriptionToUser() {
         viewModel.manageSubscriptionToUser()
+        viewModel.reloadProfileData()
     }
 
     private fun observeData() {
@@ -78,6 +85,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 launch {
                     viewModel.eventList.collect {
                         (binding.profileRv.adapter as ProfileAdapter).submitData(it)
+                        binding.root.isRefreshing = false
                     }
                 }
                 launch {

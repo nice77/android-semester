@@ -12,7 +12,7 @@ import com.example.task.databinding.ItemButtonBinding
 class BottomSheetImagesAdapter(
     private val onAddButtonClicked: () -> Unit,
     private val onSubmitButtonClicked: () -> Unit,
-    private val onItemSwiped: (String) -> Unit
+    private val onItemSwiped: (BottomUiModel.Image) -> Unit
 ) : ListAdapter<BottomUiModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {

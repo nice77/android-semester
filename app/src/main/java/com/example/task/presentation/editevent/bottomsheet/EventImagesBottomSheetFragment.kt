@@ -16,39 +16,53 @@ class EventImagesBottomSheetFragment : BottomSheetDialogFragment(R.layout.fragme
 
     private val binding by viewBinding(FragmentEventImagesBinding::bind)
 
-    val sizeLeft = arguments?.getInt(IMAGE_SIZE_KEY) ?: 0
+    var sizeLeft = arguments?.getInt(IMAGE_SIZE_KEY) ?: 0
     private val loadedImages : MutableList<Uri> = mutableListOf()
     private val removedImages : MutableList<String> = mutableListOf()
 
     private val imageLauncher = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(maxItems = 10 - sizeLeft)) {
-        loadedImages.clear()
         loadedImages.addAll(it)
+        val adapter = (binding.imagesRv.adapter as BottomSheetImagesAdapter)
+        val newList : List<BottomUiModel> = adapter.currentList.subList(0, adapter.itemCount - 2) + it.map { BottomUiModel.Image(path = it.toString(), isUri = true) } + adapter.currentList.subList(adapter.itemCount - 2, adapter.itemCount)
+        adapter.submitList(newList)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            val list = it.getStringArrayList(STRING_ARRAY_KEY) ?: throw NoSuchElementException()
-            val bottomUiList : MutableList<BottomUiModel> = list.map(BottomUiModel::Image).toMutableList()
+            val list = it.getStringArrayList(CURRENT_IMAGES_KEY) ?: throw NoSuchElementException()
+            val loadedImagesStringList = it.getStringArrayList(LOADED_IMAGES_KEY)?.toMutableList() ?: mutableListOf()
+
+            val combinedList : MutableList<BottomUiModel> = list.map {
+                BottomUiModel.Image(path = it, isUri = false)
+            }.toMutableList()
+            combinedList.addAll(loadedImagesStringList.map {
+                BottomUiModel.Image(path = it, isUri = true)
+            })
             repeat(2) {
-                bottomUiList.add(BottomUiModel.Button)
+                combinedList.add(BottomUiModel.Button)
             }
             binding.imagesRv.adapter = BottomSheetImagesAdapter(
                 onAddButtonClicked = ::onAddButtonClicked,
                 onSubmitButtonClicked = ::onSubmitButtonClicked,
                 onItemSwiped = ::onItemSwiped
             )
-            (binding.imagesRv.adapter as BottomSheetImagesAdapter).submitList(bottomUiList.toList())
+            (binding.imagesRv.adapter as BottomSheetImagesAdapter).submitList(combinedList.toList())
             val callback = ItemSwipeHelper()
             val touchHelper = ItemTouchHelper(callback)
             touchHelper.attachToRecyclerView(binding.imagesRv)
         }
     }
 
-    private fun onItemSwiped(path : String) {
+    private fun onItemSwiped(image : BottomUiModel.Image) {
         val adapter = (binding.imagesRv.adapter as BottomSheetImagesAdapter)
-        adapter.submitList(adapter.currentList.filter { if (it is BottomUiModel.Image) it.path != path else true })
-        removedImages.add(path)
+        adapter.submitList(adapter.currentList.filter { if (it is BottomUiModel.Image && it.isUri == image.isUri) it.path != image.path else true })
+        if (image.isUri) {
+            val uri = Uri.parse(image.path)
+            loadedImages.filter { path -> path != uri }
+        } else {
+            removedImages.add(image.path)
+        }
     }
 
     private fun onAddButtonClicked() {
@@ -56,16 +70,11 @@ class EventImagesBottomSheetFragment : BottomSheetDialogFragment(R.layout.fragme
     }
 
     private fun onSubmitButtonClicked() {
-        println("loadedImages: $loadedImages")
-        println("upd: ${ArrayList(loadedImages.map {
-            it.toString()
-        })}")
         setFragmentResult(
             requestKey = FRAGMENT_RESULT_KEY,
             result = Bundle().apply {
-                println("Adding prekls")
                 putStringArrayList(IMAGES_AFTER_REMOVAL_KEY, ArrayList(removedImages))
-                putStringArrayList(ARRAY_LIST_KEY, ArrayList(loadedImages.map {
+                putStringArrayList(LOADED_IMAGES_KEY, ArrayList(loadedImages.map {
                     it.toString()
                 }))
             }
@@ -73,16 +82,21 @@ class EventImagesBottomSheetFragment : BottomSheetDialogFragment(R.layout.fragme
         dismiss()
     }
 
+    fun reduceSizeLeft() {
+        sizeLeft--
+    }
+
     companion object {
-        const val STRING_ARRAY_KEY = "STRING_ARRAY_KEY"
+        const val CURRENT_IMAGES_KEY = "STRING_ARRAY_KEY"
         const val IMAGE_SIZE_KEY = "IMAGE_SIZE_KEY"
         const val FRAGMENT_RESULT_KEY = "FRAGMENT_RESULT_KEY"
-        const val ARRAY_LIST_KEY = "ARRAY_LIST_KEY"
+        const val LOADED_IMAGES_KEY = "ARRAY_LIST_KEY"
         const val IMAGES_AFTER_REMOVAL_KEY = "IMAGES_AFTER_REMOVAL_KEY"
 
-        fun getInstance(images : List<String>) : EventImagesBottomSheetFragment {
+        fun getInstance(images : List<String>, imagesUri : List<Uri>) : EventImagesBottomSheetFragment {
             val bundle = Bundle().apply {
-                putStringArrayList(STRING_ARRAY_KEY, ArrayList(images))
+                putStringArrayList(CURRENT_IMAGES_KEY, ArrayList(images))
+                putStringArrayList(LOADED_IMAGES_KEY, ArrayList(imagesUri.map { it.toString() }))
             }
             return EventImagesBottomSheetFragment().apply {
                 arguments = bundle
