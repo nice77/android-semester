@@ -40,10 +40,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         super.onViewCreated(view, savedInstanceState)
         mapView = binding.map
         isPointEditable = arguments?.getBoolean(IS_EDITABLE_KEY) ?: false
-        println("Is editable key: $isPointEditable")
         val latitude = arguments?.getDouble(LATITUDE_KEY) ?: throw NoSuchElementException()
         val longitude = arguments?.getDouble(LONGITUDE_KEY) ?: throw NoSuchElementException()
-        println("Got: $latitude, $longitude")
         coordinates = Pair(latitude, longitude)
         initMapView(latitude, longitude)
         binding.submitBtn.setOnClickListener {
@@ -64,7 +62,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                     Point(latitude, longitude),
                     17.0f,
                     0.0f,
-                    30.0f
+                    0.0f
                 )
             )
 

@@ -84,6 +84,7 @@ class EditEventViewModel @AssistedInject constructor(
                     longitude = longitude,
                     id = eventId
                 )).onSuccess {
+                    _submitFlow.emit(Pair(false, false))
                     addEventImagesUseCase(eventId = eventId, contentResolver = contentResolver, uriList = uriList).onSuccess {
                         _submitFlow.emit(submitFlow.value.copy(first = true))
                     }

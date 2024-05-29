@@ -121,9 +121,6 @@ class EventAdapter(
             }
 
             override fun areContentsTheSame(oldItem: EventUiModel, newItem: EventUiModel): Boolean {
-                if (oldItem is EventUiModel.Event && newItem is EventUiModel.Event) {
-                    println("OldItemList: ${oldItem.eventImages}, NewItemList: ${newItem.eventImages}; eq: ${oldItem == newItem}")
-                }
                 return oldItem == newItem
             }
 

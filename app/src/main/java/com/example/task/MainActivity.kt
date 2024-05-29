@@ -10,12 +10,7 @@ import com.example.task.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding : ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
-    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        when {
-            !shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION) ->
-                println(42)
-        }
-    }
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
