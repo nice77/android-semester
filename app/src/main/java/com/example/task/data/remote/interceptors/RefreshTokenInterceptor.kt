@@ -4,7 +4,6 @@ import com.example.task.data.local.sharedpreferences.TokensEntity
 import com.example.task.data.local.sharedpreferences.TokensPreferences
 import com.example.task.data.remote.datasource.AuthApi
 import com.example.task.data.remote.datasource.requests.RefreshRequest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -37,6 +36,7 @@ class RefreshTokenInterceptor @Inject constructor(
                     return chain.proceed(
                         Request.Builder()
                             .url(chain.request().url)
+                            .method(chain.request().method, chain.request().body)
                             .addHeader("Authorization", "Bearer ${tokensEntity.access}")
                             .build()
                     )
