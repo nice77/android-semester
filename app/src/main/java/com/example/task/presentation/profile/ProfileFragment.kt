@@ -7,9 +7,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadStates
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentProfileBinding
+import com.example.task.presentation.event.EventFragment
 import com.example.task.presentation.profile.profileRv.ProfileAdapter
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
@@ -32,12 +36,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             viewModel.reloadProfileData()
             findNavController().currentBackStackEntry?.savedStateHandle?.set(IS_MODIFIED_KEY, null)
         }
-
+        binding.root.setOnRefreshListener {
+            viewModel.reloadProfileData()
+        }
         binding.profileRv.adapter = ProfileAdapter(
             onRadioButtonChecked = ::onRadioButtonChecked,
-            onEditButtonPressed = ::onEditButtonPressed
+            onEditButtonPressed = ::onEditButtonPressed,
+            onEventItemPressed = ::onEventClicked,
+            manageSubscriptionToUser = ::manageSubscriptionToUser,
+            onCreateNewClicked = ::onCreateNewClicked
         )
+        binding.profileRv.overScrollMode
         observeData()
+    }
+
+    private fun onCreateNewClicked() {
+        findNavController().navigate(R.id.action_profileFragment_to_editEventFragment)
     }
 
     private fun onEditButtonPressed() {
@@ -48,11 +62,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel.checkNewItem(checkedItemId = radioButtonId)
     }
 
+    private fun onEventClicked(eventId : Long) {
+        val bundle = Bundle().apply {
+            putLong(EventFragment.CURRENT_EVENT_KEY, eventId)
+        }
+        findNavController().navigate(R.id.action_profileFragment_to_eventFragment, bundle)
+    }
+
+    private fun manageSubscriptionToUser() {
+        viewModel.manageSubscriptionToUser()
+        viewModel.reloadProfileData()
+    }
+
     private fun observeData() {
         lifecycleScope.launch {
             repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-                viewModel.eventList.collect {
-                    (binding.profileRv.adapter as ProfileAdapter).submitData(it)
+                launch {
+                    viewModel.eventList.collect {
+                        (binding.profileRv.adapter as ProfileAdapter).submitData(it)
+                        binding.root.isRefreshing = false
+                    }
                 }
             }
         }

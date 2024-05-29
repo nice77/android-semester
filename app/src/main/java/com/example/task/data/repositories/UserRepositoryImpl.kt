@@ -82,8 +82,24 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserImage(file: File): String {
-        val requestFile = file.asRequestBody(StaticStrings.IMAGE_CONTENT_TYPE)
+        val requestFile = file.asRequestBody(StaticStrings.IMAGE_PNG_CONTENT_TYPE)
         val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
         return userApi.updateUserImage(filePart)
+    }
+
+    override suspend fun manageSubscriptionToEvent(eventId: Long) {
+        userApi.manageSubscriptionToEvent(eventId)
+    }
+
+    override suspend fun amISubscribedToEvent(eventId: Long): Boolean {
+        return userApi.amISubscribedToEvent(eventId)
+    }
+
+    override suspend fun manageSubscriptionToUser(userId: Long) {
+        userApi.manageSubscriptionToUser(userId = userId)
+    }
+
+    override suspend fun amISubscribedToUser(userId: Long): Boolean {
+        return userApi.amISubscribedToUser(userId = userId)
     }
 }

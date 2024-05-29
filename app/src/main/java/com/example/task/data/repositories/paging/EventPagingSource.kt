@@ -4,11 +4,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.task.domain.models.EventDomainModel
 import com.example.task.domain.repository.EventRepository
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import retrofit2.HttpException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class EventPagingSource @Inject constructor(
+class EventPagingSource @AssistedInject constructor(
     private val eventRepository: EventRepository
 ) : PagingSource<Int, EventDomainModel>() {
     override fun getRefreshKey(state: PagingState<Int, EventDomainModel>): Int? {
@@ -34,5 +36,10 @@ class EventPagingSource @Inject constructor(
         } catch (e : UnknownHostException) {
             LoadResult.Error(e)
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create() : EventPagingSource
     }
 }

@@ -64,4 +64,20 @@ interface UserApi {
     @Headers(StaticStrings.AUTH_HEADER)
     @Multipart
     suspend fun updateUserImage(@Part userImage : MultipartBody.Part) : String
+
+    @POST("users/event")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun manageSubscriptionToEvent(@Query("event_id") eventId : Long)
+
+    @GET("users/event")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun amISubscribedToEvent(@Query("event_id") eventId : Long) : Boolean
+
+    @POST("users/{id}/subscribe")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun manageSubscriptionToUser(@Path("id") userId : Long)
+
+    @GET("users/{id}/subscription")
+    @Headers(StaticStrings.AUTH_HEADER)
+    suspend fun amISubscribedToUser(@Path("id") userId: Long) : Boolean
 }

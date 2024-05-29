@@ -6,11 +6,13 @@ import com.example.task.data.remote.interceptors.AccessTokenInterceptor
 import com.example.task.data.remote.interceptors.RefreshTokenInterceptor
 import com.example.task.data.repositories.AuthRepositoryImpl
 import com.example.task.data.repositories.CurrentDestinationRepositoryImpl
+import com.example.task.data.repositories.CommentRepositoryImpl
 import com.example.task.data.repositories.EventRepositoryImpl
 import com.example.task.data.repositories.FirstRunRepositoryImpl
 import com.example.task.data.repositories.TokensRepositoryImpl
 import com.example.task.data.repositories.UserRepositoryImpl
 import com.example.task.domain.repository.AuthRepository
+import com.example.task.domain.repository.CommentRepository
 import com.example.task.domain.repository.CurrentDestinationRepository
 import com.example.task.domain.repository.EventRepository
 import com.example.task.domain.repository.FirstRunRepository
@@ -48,4 +50,7 @@ interface DataModuleBinder {
 
     @Binds
     fun bindCurrentDestinationRepoImplToInterface(currentDestinationRepositoryImpl: CurrentDestinationRepositoryImpl) : CurrentDestinationRepository
+
+    @Binds
+    fun bindCommentRepositoryImplToInterface(commentRepositoryImpl: CommentRepositoryImpl) : CommentRepository
 }

@@ -5,7 +5,9 @@ import com.example.task.data.di.DataModule
 import com.example.task.data.di.DataModuleBinder
 import com.example.task.presentation.MainActivityViewModel
 import com.example.task.presentation.authentication.AuthViewModel
+import com.example.task.presentation.editevent.EditEventViewModel
 import com.example.task.presentation.editprofile.EditProfileViewModel
+import com.example.task.presentation.event.EventViewModel
 import com.example.task.presentation.main.MainViewModel
 import com.example.task.presentation.profile.ProfileViewModel
 import com.example.task.presentation.registration.RegisterViewModel
@@ -49,4 +51,8 @@ interface AppComponent {
     fun selectViewModel() : SelectViewModel.Factory
 
     fun themeChooseViewModel() : ThemeChooseViewModel.Factory
+
+    fun eventViewModel() : EventViewModel.Factory
+
+    fun editEventViewModel() : EditEventViewModel.Factory
 }

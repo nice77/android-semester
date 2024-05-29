@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class DateSerializer : KSerializer<Date> {
-    private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
+    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)

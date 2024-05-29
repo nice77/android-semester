@@ -13,10 +13,13 @@ class ItemUsersViewHolder(
     private val binding: ItemUsersRecyclerBinding,
     private val viewModel: MainViewModel,
     viewLifecycleOwner: LifecycleOwner,
+    private val onUserItemClicked: (Long) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
-        binding.usersRv.adapter = UsersAdapter()
+        binding.usersRv.adapter = UsersAdapter(
+            onUserItemClicked = onUserItemClicked
+        )
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usersFlow.collectLatest { usersList ->
                 (binding.usersRv.adapter as UsersAdapter).submitData(usersList)

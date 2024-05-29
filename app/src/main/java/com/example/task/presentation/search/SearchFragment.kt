@@ -7,9 +7,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.task.R
 import com.example.task.databinding.FragmentSearchBinding
+import com.example.task.presentation.event.EventFragment
+import com.example.task.presentation.profile.ProfileFragment
 import com.example.task.presentation.search.searchRv.SearchAdapter
 import com.example.task.utils.component
 import com.example.task.utils.lazyViewModel
@@ -30,7 +33,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         checkedId = viewModel.configFlow.value.checkedId
         binding.searchRv.adapter = SearchAdapter(
             onTextUpdate = ::onTextUpdate,
-            onFilterButtonPressed = ::openFilterBottomFragment
+            onFilterButtonPressed = ::openFilterBottomFragment,
+            onEventItemPressed = ::onEventItemPressed,
+            onUserItemPressed = ::onUserItemPressed
         )
         observeData()
     }
@@ -65,6 +70,20 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             query = null
         )
         viewModel.setupNewSearchConfig(searchConfig)
+    }
+
+    private fun onEventItemPressed(eventId : Long) {
+        val bundle = Bundle().apply {
+            putLong(EventFragment.CURRENT_EVENT_KEY, eventId)
+        }
+        findNavController().navigate(R.id.action_searchFragment_to_eventFragment, bundle)
+    }
+
+    private fun onUserItemPressed(userId : Long) {
+        val bundle = Bundle().apply {
+            putLong(ProfileFragment.USER_ID_KEY, userId)
+        }
+        findNavController().navigate(R.id.action_searchFragment_to_profileFragment, bundle)
     }
 
     private fun observeData() {

@@ -16,6 +16,8 @@ import com.example.task.presentation.main.MainViewModel
 class MainAdapter(
     private val viewModel: MainViewModel,
     private val viewLifecycleOwner: LifecycleOwner,
+    private val onEventItemPressed: (Long) -> Unit,
+    private val onUserItemClicked: (Long) -> Unit
 ) : PagingDataAdapter<MainUiModel, RecyclerView.ViewHolder>(ITEM_DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -28,6 +30,7 @@ class MainAdapter(
                 ),
                 viewModel = viewModel,
                 viewLifecycleOwner = viewLifecycleOwner,
+                onUserItemClicked = onUserItemClicked
             )
 
             R.layout.item_event -> EventViewHolder(
@@ -35,7 +38,8 @@ class MainAdapter(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
-                )
+                ),
+                onEventItemPressed = onEventItemPressed
             )
 
             R.layout.item_title -> ItemTitleViewHolder(
