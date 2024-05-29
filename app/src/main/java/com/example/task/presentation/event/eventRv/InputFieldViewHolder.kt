@@ -11,6 +11,7 @@ class InputFieldViewHolder(
     init {
         binding.submitIv.setOnClickListener {
             sendComment(binding.commentEt.text.toString())
+            binding.commentEt.setText("")
         }
     }
 
