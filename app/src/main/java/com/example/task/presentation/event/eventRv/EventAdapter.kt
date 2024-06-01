@@ -56,6 +56,7 @@ class EventAdapter(
                     onImageMapClicked = onImageMapClicked
                 )
                 eventViewHolder?.let {
+                    isEventAuthorNameLoaded = false
                     if (dataMap.isNotEmpty()) {
                         it.updateUserName(dataMap[USERNAME_KEY] as String)
                         it.showEditButton(dataMap[SHOW_EDIT_BTN_KEY] as Boolean)
@@ -92,16 +93,18 @@ class EventAdapter(
     }
 
     fun showEditButton(result : Boolean) {
+        isEventAuthorNameLoaded = true
         eventViewHolder?.showEditButton(result)
         if (eventViewHolder == null) {
-            dataMap[SHOW_EDIT_BTN_KEY] = true
+            dataMap[SHOW_EDIT_BTN_KEY] = result
         }
     }
 
     fun updateSubscribeButton(subbed : Boolean) {
+        isEventAuthorNameLoaded = true
         eventViewHolder?.updateSubscribeButton(subbed)
         if (eventViewHolder == null) {
-            dataMap[UPDATE_SUB_BTN_KEY] = true
+            dataMap[UPDATE_SUB_BTN_KEY] = subbed
         }
     }
 
