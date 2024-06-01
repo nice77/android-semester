@@ -56,7 +56,6 @@ class EventAdapter(
                     onImageMapClicked = onImageMapClicked
                 )
                 eventViewHolder?.let {
-                    isEventAuthorNameLoaded = false
                     if (dataMap.isNotEmpty()) {
                         it.updateUserName(dataMap[USERNAME_KEY] as String)
                         it.showEditButton(dataMap[SHOW_EDIT_BTN_KEY] as Boolean)
